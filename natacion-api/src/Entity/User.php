@@ -1,112 +1,104 @@
-<?php 
+<?php
+/**
+ * User.php
+ *
+ * User Entity
+ *
+ * @category   Entity
+ * @package    MyKanban
+ * @author     Francisco Ugalde
+ * @copyright  2018 www.franciscougalde.com
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ */
+
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use DateTime;
+use Symfony\Component\Security\Core\User\UserInterface;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * User
  *
- * @ORM\Table(name="users")
- * @ORM\Entity
+ * @ORM\Table(name="user");
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository");
+ * @ORM\HasLifecycleCallbacks()
  */
-class User
+class User implements UserInterface
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id()
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="role", type="string", length=20, nullable=true)
-     */
-    private $role;
+    protected $id;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="name", type="string", length=255, nullable=true)
+     * @ORM\Column(name="name", type="string", length=150)
      */
-    private $name;
+    protected $name;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="surname", type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
-    private $surname;
+    protected $email;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="username", type="string", length=255, nullable=true)
+     * @ORM\Column(name="username", type="string", length=255, unique=true)
      */
-    private $username;
+    protected $username;
+
+    protected $salt;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="email", type="string", length=255, nullable=true)
+     * @ORM\Column(name="password", type="string", length=255)
+     * @Serializer\Exclude()
      */
-    private $email;
+    protected $password;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="password", type="string", length=255, nullable=true)
+     * @var string
      */
-    private $password;
+    protected $plainPassword;
 
     /**
-     * @var string|null
+     * @var array
      *
-     * @ORM\Column(name="image", type="string", length=255, nullable=true)
+     * @ORM\Column(name="roles", type="json_array")
      */
-    private $image;
+    protected $roles = [];
 
     /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(name="created_at", type="datetime", nullable=true)
+     * @ORM\Column(name="created_at", type="datetime")
      */
-    private $createdAt;
+    protected $createdAt;
 
-	/**
+    /**
+     * @ORM\Column(name="updated_at", type="datetime")
+     */
+    protected $updatedAt;
+
+    /**
      * @return mixed
      */
     public function getId()
     {
         return $this->id;
     }
-	/**
-     * @return mixed
-     */
-    public function getRole()
-    {
-        return $this->role;
-    }
-	/**
-     * @param mixed $role
-     */
-    public function setRole($role)
-    {
-        $this->role = $role;
 
-        return $this;
-    }
-	/**
+    /**
      * @return mixed
      */
     public function getName()
     {
         return $this->name;
     }
-	/**
+
+    /**
      * @param mixed $name
+     * @return self
      */
     public function setName($name)
     {
@@ -114,31 +106,13 @@ class User
 
         return $this;
     }
-	/**
-     * @return mixed
-     */
-    public function getSurname()
-    {
-        return $this->surname;
-    }
-	/**
-     * @param mixed $surname
-     */
-    public function setSurname($surname)
-    {
-        $this->surname = $surname;
 
-        return $this;
-    }
-	/**
-     * @return mixed
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-	/**
-     * @param mixed $email
+    /**
+     * Set email
+     *
+     * @param string $email
+     *
+     * @return User
      */
     public function setEmail($email)
     {
@@ -146,6 +120,17 @@ class User
 
         return $this;
     }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
     /**
      * @return mixed
      */
@@ -153,8 +138,10 @@ class User
     {
         return $this->username;
     }
-	/**
+
+    /**
      * @param mixed $username
+     * @return self
      */
     public function setUsername($username)
     {
@@ -162,15 +149,18 @@ class User
 
         return $this;
     }
-	/**
+
+    /**
      * @return mixed
      */
     public function getPassword()
     {
         return $this->password;
     }
-	/**
+
+    /**
      * @param mixed $password
+     * @return self
      */
     public function setPassword($password)
     {
@@ -178,36 +168,101 @@ class User
 
         return $this;
     }
-	/**
-     * @return mixed
+
+    /**
+     * @return string
      */
-    public function getImage()
+    public function getPlainPassword()
     {
-        return $this->image;
+        return $this->plainPassword;
     }
-	/**
-     * @param mixed $image
+
+    /**
+     * @param $plainPassword
      */
-    public function setImage($image)
+    public function setPlainPassword($plainPassword)
     {
-        $this->image = $image;
+        $this->plainPassword = $plainPassword;
+
+        $this->password = null;
+    }
+
+    /**
+     * Set roles
+     *
+     * @param array $roles
+     *
+     * @return User
+     */
+    public function setRoles($roles)
+    {
+        $this->roles = $roles;
 
         return $this;
     }
-	/**
+
+    /**
+     * Get roles
+     *
+     * @return array
+     */
+    public function getRoles()
+    {
+        return ["ROLE_USER"];
+    }
+
+    public function getSalt() {}
+
+    public function eraseCredentials() {}
+
+    /**
      * @return mixed
      */
     public function getCreatedAt()
     {
         return $this->createdAt;
     }
-	/**
+
+    /**
      * @param mixed $createdAt
+     * @return self
      */
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param mixed $updatedAt
+     * @return self
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updatedTimestamps()
+    {
+        $dateTimeNow = new DateTime('now');
+        $this->setUpdatedAt($dateTimeNow);
+        if ($this->getCreatedAt() === null) {
+            $this->setCreatedAt($dateTimeNow);
+        }
     }
 }
