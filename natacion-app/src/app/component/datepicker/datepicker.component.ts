@@ -50,9 +50,11 @@ export class NgbdDatepickerBasic  {
   }
 
   // This is for multiple month
+  
   displayMonths = 2;
   navigation = 'select';
-
+  showWeekNumbers = false;
+  
   // This is for the disable datepicker
   model3: NgbDateStruct = {year: my.getFullYear(), month: my.getMonth() + 1, day: my.getDate()};
   disabled = true;
