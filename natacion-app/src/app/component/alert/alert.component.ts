@@ -1,8 +1,6 @@
-
-import {debounceTime} from 'rxjs/operators';
 import { Input, Component, OnInit } from '@angular/core';
-import {Subject} from 'rxjs';
-
+import {Subject} from 'rxjs/Subject';
+import 'rxjs/add/operator/debounceTime';
 
 @Component({
 	selector: '',
@@ -55,7 +53,7 @@ export class NgbdAlertBasic implements OnInit{
     setTimeout(() => this.staticAlertClosed = true, 20000);
 
     this._success.subscribe((message) => this.successMessage = message);
-    this._success.pipe(debounceTime(5000)).subscribe(() => this.successMessage = null);
+    this._success.debounceTime(5000).subscribe(() => this.successMessage = null);
   }
 
   public changeSuccessMessage() {
