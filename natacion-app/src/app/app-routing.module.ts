@@ -8,11 +8,12 @@ import { BlankComponent } from './layouts/blank/blank.component';
 import { AuthGuardService as AuthGuard } from './core/services/auth.guard';
 
 export const Approutes: Routes = [
+    { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
     {
         path: '',
         component: FullComponent,
         children: [
-            { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+            
             { path: 'dashboard', loadChildren: './starter/starter.module#StarterModule' },
             { path: 'component', loadChildren: './component/component.module#ComponentsModule' },
         ], 
@@ -21,7 +22,7 @@ export const Approutes: Routes = [
     {
         path: '',
         component: BlankComponent,
-        children: [            
+        children: [         
             {
                 path: 'authentication',
                 loadChildren: './authentication/authentication.module#AuthenticationModule'
