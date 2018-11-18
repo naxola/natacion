@@ -18,15 +18,24 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 
+import { AuthGuardService as AuthGuard } from './core/services/auth.guard';
+import { AuthService } from './core/services/auth.service';
+
 import { Approutes } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SpinnerComponent } from './shared/spinner.component';
+
+import { JwtModule } from '@auth0/angular-jwt';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
   wheelSpeed: 2,
   wheelPropagation: true,
 };
+
+export function tokenGetter() {
+  return localStorage.getItem('access_token');
+}
 
 @NgModule({
   declarations: [
@@ -44,11 +53,20 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     BrowserAnimationsModule,   
     FormsModule,
     HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        whitelistedDomains: ['localhost:4200'],
+        blacklistedRoutes: ['localhost:4200/authentication/']
+      }
+    }),
     NgbModule.forRoot(),
     RouterModule.forRoot(Approutes, { useHash: false }),  
     PerfectScrollbarModule
   ],
   providers: [
+      AuthService,
+      AuthGuard,
       {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
