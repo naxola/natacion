@@ -3,7 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule, LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule } from '@angular/forms';
+
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -48,13 +49,14 @@ export function tokenGetter() {
     CommonModule,
     BrowserModule,
     BrowserAnimationsModule,   
-    FormsModule,
     HttpClientModule,
+    FormsModule,
     NgbModule.forRoot(),
     RouterModule.forRoot(Approutes, { enableTracing: true }),  
     PerfectScrollbarModule
   ],
   providers: [
+    FormBuilder,
       {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
