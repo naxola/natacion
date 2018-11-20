@@ -5,7 +5,7 @@ import { CommonModule, LocationStrategy, HashLocationStrategy } from '@angular/c
 import { NgModule } from '@angular/core';
 import { FormBuilder, FormsModule } from '@angular/forms';
 
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Routes, RouterModule } from '@angular/router';
 
 import { FullComponent } from './layouts/full/full.component';
@@ -23,7 +23,8 @@ import { Approutes } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SpinnerComponent } from './shared/spinner.component';
 
-
+import { ErrorInterceptor } from './core/helpers/error.interceptor';
+import { JwtInterceptor  } from './core/helpers/jwt.interceptor';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -57,6 +58,8 @@ export function tokenGetter() {
   ],
   providers: [
     FormBuilder,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
       {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
