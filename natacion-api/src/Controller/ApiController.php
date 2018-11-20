@@ -122,15 +122,16 @@ class ApiController extends FOSRestController
             $code = 200;
             $error = false;
  
-            $name = $request->request->get('_name');
-            $email = $request->request->get('_email');
-            $username = $request->request->get('_username');
-            $password = $request->request->get('_password');
+            $firstname = $request->request->get('firstName');
+            $lastname = $request->request->get('lastName');
+            $email = $request->request->get('email');
+            $password = $request->request->get('password');
  
             $user = new User();
-            $user->setName($name);
+            $user->setFirstName($firstname);
+            $user->setLastName($lastname);
             $user->setEmail($email);
-            $user->setUsername($username);
+            $user->setUsername($email);
             $user->setPlainPassword($password);
             $user->setPassword($encoder->encodePassword($user, $password));
  

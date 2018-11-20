@@ -36,9 +36,13 @@ class User implements UserInterface
     protected $id;
 
     /**
-     * @ORM\Column(name="name", type="string", length=150)
+     * @ORM\Column(name="firstname", type="string", length=150)
      */
-    protected $name;
+    protected $firstname;
+    /**
+     * @ORM\Column(name="lastname", type="string", length=250)
+     */
+    protected $lastname;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
@@ -91,22 +95,39 @@ class User implements UserInterface
     /**
      * @return mixed
      */
-    public function getName()
+    public function getLastName()
     {
-        return $this->name;
+        return $this->lastname;
     }
 
     /**
-     * @param mixed $name
+     * @param mixed $lastname
      * @return self
      */
-    public function setName($name)
+    public function setLastName($lastname)
     {
-        $this->name = $name;
+        $this->lastname = $lastname;
 
         return $this;
     }
+    /**
+     * @return mixed
+     */
+    public function getFirstName()
+    {
+        return $this->firstname;
+    }
 
+    /**
+     * @param mixed $firstname
+     * @return self
+     */
+    public function setFirstName($firstname)
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
     /**
      * Set email
      *

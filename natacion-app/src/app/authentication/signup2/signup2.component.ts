@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../../core/services/user.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
+import { User } from '../../core/models/user.model';
 
 @Component({
     selector: 'app-signup',
@@ -12,6 +13,7 @@ import { first } from 'rxjs/operators';
 export class Signup2Component implements OnInit {
 
     registerForm: FormGroup;
+
     loading = false;
     submitted = false;
 
@@ -23,8 +25,10 @@ export class Signup2Component implements OnInit {
         this.registerForm = this.formBuilder.group({
             firstName: ['', Validators.required],
             lastName: ['', Validators.required],
-            username: ['', Validators.required],
-            password: ['', [Validators.required, Validators.minLength(6)]]
+            email: ['', Validators.required],
+            password: ['', [Validators.required, Validators.minLength(6)]],
+            passwordConfirm: ['', Validators.required],
+            agreement: ['', Validators.requiredTrue]
         });
     }
 
@@ -32,27 +36,32 @@ export class Signup2Component implements OnInit {
     get f() { return this.registerForm.controls; }
 
     registrarUsuario() {
-        alert("Hola");
-        /*
+        
+        
         this.submitted = true;
+        
 
         // stop here if form is invalid
         if (this.registerForm.invalid) {
             return;
         }
-
+        
+        
         this.loading = true;
+        
         this.userService.registerUser(this.registerForm.value)
             .pipe(first())
             .subscribe(
                 data => {
+                    console.log('Registration successful');
                     //this.alertService.success('Registration successful', true);
-                    this.router.navigate(['/authentication/login']);
+                    this.router.navigate(['/authentication/login2']);
                 },
                 error => {
+                    console.log(error);
                     //this.alertService.error(error);
                     this.loading = false;
                 });
-                */
+                
     }
 }
