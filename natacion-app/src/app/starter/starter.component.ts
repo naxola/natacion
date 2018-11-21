@@ -10,14 +10,25 @@ import { UserService } from '../core/services/user.service';
 export class StarterComponent implements AfterViewInit {
 
 	subtitle:string;	
-	currentUser: User;
 
 	constructor(private userService: UserService) {
-		
-		this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-		console.log(this.currentUser);
 		this.subtitle = "This is some text within a card block."
 	}
-
-	ngAfterViewInit(){}
+	ngOnInit(){
+		this.userService.getUser()
+		.subscribe(
+			data => {
+				console.log(data);
+				localStorage.setItem('currentUserData', JSON.stringify(data));
+			},
+			error => {
+				//this.alertService.error(error);
+				console.log(error);
+			});
+	}
+	ngAfterViewInit(){
+		
+		
+		
+	}
 }
