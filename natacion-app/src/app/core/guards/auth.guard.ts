@@ -12,8 +12,7 @@ export class AuthGuard implements CanActivate {
   constructor(public router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    console.log("Can activate llamado");
-    console.log(localStorage.getItem('currentUser'));
+
     if (localStorage.getItem('currentUser')) {
         // logged in so return true
         return true;

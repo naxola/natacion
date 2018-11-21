@@ -5,10 +5,8 @@
  * User Entity
  *
  * @category   Entity
- * @package    MyKanban
- * @author     Francisco Ugalde
- * @copyright  2018 www.franciscougalde.com
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @package    Natacion-API
+ * @author     Ignacio Núñez
  */
 
 namespace App\Entity;
@@ -84,6 +82,14 @@ class User implements UserInterface
      */
     protected $updatedAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Student", mappedBy="user")
+     */
+    protected $students;
+    public function __construct()
+    {
+        $this->students = new ArrayCollection();
+    }
     /**
      * @return mixed
      */
@@ -285,5 +291,12 @@ class User implements UserInterface
         if ($this->getCreatedAt() === null) {
             $this->setCreatedAt($dateTimeNow);
         }
+    }
+    /**
+     * @return mixed
+     */
+    public function getStudents()
+    {
+        return $this->students->toArray();
     }
 }

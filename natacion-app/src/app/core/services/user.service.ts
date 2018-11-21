@@ -19,8 +19,21 @@ const httpOptions = {
 export class UserService{
     
     constructor(private http: HttpClient){}
-    
+
+    getAll() {
+        return this.http.get<User[]>(`${environment.API_URL}/api/users`);
+    }
+    getById(id: number) {
+        return this.http.get(`${environment.API_URL}/api/users/` + id);
+    }
     registerUser(user: User){
         return this.http.post(`${environment.API_URL}/api/register`, user, httpOptions);
+    }
+    update(user: User) {
+        return this.http.put(`${environment.API_URL}/api/users/` + user.id, user);
+    }
+
+    delete(id: number) {
+        return this.http.delete(`${environment.API_URL}/api/users/` + id);
     }
 }

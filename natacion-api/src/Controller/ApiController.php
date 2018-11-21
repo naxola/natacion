@@ -152,5 +152,54 @@ class ApiController extends FOSRestController
  
         return new Response($serializer->serialize($response, "json"));
     }
-
+    /**
+     * @Rest\Get("/v1/user.{_format}", name="users", defaults={"_format":"json"})
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="Gets data for current user logged user."
+     * )
+     *
+     * @SWG\Response(
+     *     response=500,
+     *     description="An error has occurred trying to get user data."
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="id",
+     *     in="query",
+     *     type="string",
+     *     description="The user ID"
+     * )
+     *
+     *
+     * @SWG\Tag(name="User")
+     */
+    public function getUserAction(Request $request) {
+        $serializer = $this->get('jms_serializer');
+        $em = $this->getDoctrine()->getManager();
+        $user_data;
+        $message = "";
+        try {
+            $code = 200;
+            $error = false;
+            $user_data = $this->getUser();/*->getId();
+            $user_data = $em->getRepository("App:User")->findBy([
+                "user" => $userId,
+            ]);
+            if (is_null($user_data)) {
+                $user_data = [];
+            }*/
+        } catch (Exception $ex) {
+            $code = 500;
+            $error = true;
+            $message = "An error has occurred trying to get User - Error: {$ex->getMessage()}";
+        }
+        $response = [
+            'code' => $code,
+            'error' => $error,
+            'data' => $code == 200 ? $user_data : $message,
+        ];
+        return new Response($serializer->serialize($response, "json"));
+    }
 }
