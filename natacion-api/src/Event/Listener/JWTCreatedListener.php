@@ -15,10 +15,10 @@ class JWTCreatedListener
     {
         /** @var $user \App\Entity\User */
         $user = $event->getUser();
-
+        
         // Inyectamos data al payload
         $payload = array_merge($event->getData(),
-                                ['roles' => $user->getRoles()]
+                                array('roles' => $user->getRoles())
         );
 
         $event->setData($payload);

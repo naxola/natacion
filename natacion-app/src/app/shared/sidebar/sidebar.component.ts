@@ -3,6 +3,12 @@ import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { ROUTES } from './menu-items';
 import { RouteInfo } from "./sidebar.metadata";
 import { Router, ActivatedRoute } from "@angular/router";
+
+import { User } from '../../core/models/user.model';
+import { UserService } from '../../core/services/user.service';
+import { AuthenticationService } from '../../core/services/authentication.services';
+import { JwtHelperService  } from '@auth0/angular-jwt';
+
 declare var $: any;
 @Component({
   selector: 'ap-sidebar',
@@ -11,7 +17,7 @@ declare var $: any;
 })
 export class SidebarComponent implements OnInit {
 	
-    
+    jwtHelper: JwtHelperService;
     showMenu: string = '';
     showSubMenu: string = '';
     public sidebarnavItems: any[];
@@ -34,9 +40,15 @@ export class SidebarComponent implements OnInit {
     }
     
     constructor(private modalService: NgbModal, private router: Router,
-        private route: ActivatedRoute) {
+        private route: ActivatedRoute,private userService: UserService, 
+        private authService: AuthenticationService
+        ) {
         
     } 
+    logout(){
+        console.log("Salir");
+        //this.authService.logout();
+    }
     // End open close
     ngOnInit() {
         this.sidebarnavItems = ROUTES.filter(sidebarnavItem => sidebarnavItem);
@@ -53,6 +65,22 @@ export class SidebarComponent implements OnInit {
             });
 
         });
+        this.jwtHelper = new JwtHelperService;
+        const token = localStorage.getItem('currentUser');
+        const decodedToken = this.jwtHelper.decodeToken(token);
+        console.log(decodedToken);
         
+        if(!localStorage.getItem('currentUserData'))
+        {
+            console.log("No hay usuario");
+            this.userService.getUser()
+		    .subscribe(
+			data => {
+				localStorage.setItem('currentUserData', JSON.stringify(data));
+			},
+			error => {
+				console.log(error);
+			});
+        }
     }
 }

@@ -68,6 +68,6 @@ export class Login2Component implements OnInit, AfterViewInit {
                     console.log(error);
                     this.loading = false;
                 });
-    }
-
+            }
+        
 }
