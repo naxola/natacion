@@ -23,10 +23,8 @@ export class AuthenticationService{
                 // login successful if there's a jwt token in the response
                 if (user && user.token) {
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
-                   
                     localStorage.setItem('token', JSON.stringify(user));
                 }
-
                 return user;
             }));
     }

@@ -1,5 +1,9 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { NgbModal, ModalDismissReasons, NgbPanelChangeEvent, NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
+
+import { UserService } from '../../core/services/user.service';
+import { User } from '../../core/models/user.model';
+
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 declare var $: any;
 @Component({
@@ -7,10 +11,18 @@ declare var $: any;
   templateUrl: './navigation.component.html'
 })
 export class NavigationComponent implements AfterViewInit {
-	name:string;
+  name:string;
+  user: User;
   	public config: PerfectScrollbarConfigInterface = {};
-  	constructor(private modalService: NgbModal) {
-    	
+  	constructor(private modalService: NgbModal,private userService: UserService) {
+      this.userService.getUser()
+      .subscribe(
+      data => {
+          this.user = data['data'];
+      },
+      error => {
+          console.log(error);
+      });
     }
 
     // This is for Notifications

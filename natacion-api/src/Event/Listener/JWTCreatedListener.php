@@ -18,7 +18,7 @@ class JWTCreatedListener
         
         // Inyectamos data al payload
         $payload = array_merge($event->getData(),
-                                array('roles' => $user->getRoles())
+                                array('id' => $user->getId())
         );
 
         $event->setData($payload);

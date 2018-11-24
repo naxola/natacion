@@ -23,8 +23,11 @@ import { Approutes } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SpinnerComponent } from './shared/spinner.component';
 
+import { AuthGuard } from './core/guards/auth.guard';
+import { UserService } from './core/services/user.service';
 import { ErrorInterceptor } from './core/helpers/error.interceptor';
 import { JwtInterceptor  } from './core/helpers/jwt.interceptor';
+import { AuthenticationService } from './core/services/authentication.services';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -58,6 +61,9 @@ export function tokenGetter() {
   ],
   providers: [
     FormBuilder,
+    AuthGuard,
+    UserService,
+    AuthenticationService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
       {
