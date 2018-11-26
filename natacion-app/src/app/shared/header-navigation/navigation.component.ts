@@ -16,13 +16,13 @@ export class NavigationComponent implements AfterViewInit {
   	public config: PerfectScrollbarConfigInterface = {};
   	constructor(private modalService: NgbModal,private userService: UserService) {
       this.userService.getUser()
-      .subscribe(
-      data => {
-          this.user = data['data'];
-      },
-      error => {
-          console.log(error);
-      });
+            .subscribe(
+            data => {
+                this.user = data['data'];
+            },
+            error => {
+                console.log(error);
+            });
     }
 
     // This is for Notifications
@@ -100,5 +100,7 @@ export class NavigationComponent implements AfterViewInit {
         
         
         $("body").trigger("resize");
+
+        
     }
 }

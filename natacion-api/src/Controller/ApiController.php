@@ -14,6 +14,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Student;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -200,6 +201,126 @@ class ApiController extends FOSRestController
             'error' => $error,
             'data' => $code == 200 ? $user_data : $message,
         ];
+        return new Response($serializer->serialize($response, "json"));
+    }
+      /**
+     * @Rest\Get("/v1/student.{_format}", name="student_list_all", defaults={"_format":"json"})
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="Gets all students for current logged user."
+     * )
+     *
+     * @SWG\Response(
+     *     response=500,
+     *     description="An error has occurred trying to get all user students."
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="id",
+     *     in="query",
+     *     type="string",
+     *     description="The student ID"
+     * )
+     *
+     *
+     * @SWG\Tag(name="Board")
+     */
+    public function getAllStudentAction(Request $request) {
+        $serializer = $this->get('jms_serializer');
+        $em = $this->getDoctrine()->getManager();
+        $students = [];
+        $message = "";
+ 
+        try {
+            $code = 200;
+            $error = false;
+ 
+            $userId = $this->getUser()->getId();
+            $students = $em->getRepository("App:Student")->findBy([
+                "user" => $userId,
+            ]);
+ 
+            if (is_null($students)) {
+                $students = [];
+            }
+ 
+        } catch (Exception $ex) {
+            $code = 500;
+            $error = true;
+            $message = "An error has occurred trying to get all Students - Error: {$ex->getMessage()}";
+        }
+ 
+        $response = [
+            'code' => $code,
+            'error' => $error,
+            'data' => $code == 200 ? $students : $message,
+        ];
+ 
+        return new Response($serializer->serialize($response, "json"));
+    }
+
+    /**
+     * @Rest\Post("/v1/student.{_format}", name="student_add", defaults={"_format":"json"})
+     *
+     * @SWG\Response(
+     *     response=201,
+     *     description="Student was added successfully"
+     * )
+     *
+     * @SWG\Response(
+     *     response=500,
+     *     description="An error was occurred trying to add new student"
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="name",
+     *     in="body",
+     *     type="string",
+     *     description="The student name",
+     *     schema={}
+     * )
+     *
+     * @SWG\Tag(name="Student")
+     */
+    public function addStudentAction(Request $request) {
+        $serializer = $this->get('jms_serializer');
+        $em = $this->getDoctrine()->getManager();
+        $student = [];
+        $message = "";
+ 
+        try {
+           $code = 201;
+           $error = false;
+           $name = $request->request->get("name", null);
+           $user = $this->getUser();
+ 
+           if (!is_null($name)) {
+               $student = new Student();
+               $student->setName($name);
+               $student->setUser($user);
+ 
+               $em->persist($student);
+               $em->flush();
+ 
+           } else {
+               $code = 500;
+               $error = true;
+               $message = "An error has occurred trying to add new student - Error: You must to provide a student name";
+           }
+ 
+        } catch (Exception $ex) {
+            $code = 500;
+            $error = true;
+            $message = "An error has occurred trying to add new student - Error: {$ex->getMessage()}";
+        }
+ 
+        $response = [
+            'code' => $code,
+            'error' => $error,
+            'data' => $code == 201 ? $student : $message,
+        ];
+ 
         return new Response($serializer->serialize($response, "json"));
     }
 }

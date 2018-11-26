@@ -4,7 +4,8 @@ import { ROUTES } from './menu-items';
 import { RouteInfo } from "./sidebar.metadata";
 import { Router, ActivatedRoute } from "@angular/router";
 
-
+import { UserService } from '../../core/services/user.service';
+import { User } from '../../core/models/user.model';
 
 declare var $: any;
 @Component({
@@ -17,6 +18,7 @@ export class SidebarComponent implements OnInit {
     
     showMenu: string = '';
     showSubMenu: string = '';
+    user: User;
     
     public sidebarnavItems: any[];
     //this is for the open close
@@ -38,8 +40,17 @@ export class SidebarComponent implements OnInit {
     }
     
     constructor(private modalService: NgbModal, private router: Router,
-        private route: ActivatedRoute
-        ) {} 
+        private route: ActivatedRoute,private userService: UserService
+        ) {
+            this.userService.getUser()
+            .subscribe(
+            data => {
+                this.user = data['data'];
+            },
+            error => {
+                console.log(error);
+            });
+        } 
     // End open close
     ngOnInit() {
         this.sidebarnavItems = ROUTES.filter(sidebarnavItem => sidebarnavItem);

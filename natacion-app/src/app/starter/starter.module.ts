@@ -3,14 +3,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
+import { CardStudentComponent } from '../widgets/cardStudent/cardStudent.component';
 import { StarterComponent } from './starter.component';
-
 
 const routes: Routes = [{
 	path: '',
 	data: {
-        title: 'Starter Page',
-        urls: [{title: 'Dashboard',url: '/dashboard'},{title: 'Starter Page'}]
+        title: 'Estudiantes',
+        urls: [{title: 'Dashboard',url: '/dashboard'},{title: 'Estudiantes'}]
     },
 	component: StarterComponent
 }];
@@ -21,6 +21,9 @@ const routes: Routes = [{
     	CommonModule, 
     	RouterModule.forChild(routes)
     ],
-	declarations: [StarterComponent]
+	declarations: [
+		StarterComponent,
+		CardStudentComponent
+	]
 })
 export class StarterModule { }
