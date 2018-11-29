@@ -30,6 +30,11 @@ import { ErrorInterceptor } from './core/helpers/error.interceptor';
 import { JwtInterceptor  } from './core/helpers/jwt.interceptor';
 import { AuthenticationService } from './core/services/authentication.services';
 
+import { NgbDatepickerConfig, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateESParserFormatter } from "./widgets/datepicker/ngbDateESParserFormatter";
+import { ToastrModule } from 'ngx-toastr';
+
+
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
   wheelSpeed: 2,
@@ -57,7 +62,12 @@ export function tokenGetter() {
     HttpClientModule,
     FormsModule,
     NgbModule.forRoot(),
-    RouterModule.forRoot(Approutes, { enableTracing: true }),  
+    RouterModule.forRoot(Approutes, { enableTracing: true }), 
+    ToastrModule.forRoot({
+      timeOut: 5000,
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true,
+    }), 
     PerfectScrollbarModule
   ],
   providers: [
@@ -68,6 +78,7 @@ export function tokenGetter() {
     AuthenticationService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: NgbDateParserFormatter, useClass: NgbDateESParserFormatter},
       {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG

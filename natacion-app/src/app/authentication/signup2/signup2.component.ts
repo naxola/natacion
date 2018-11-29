@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { UserService } from '../../core/services/user.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
-import { User } from '../../core/models/user.model';
 
 @Component({
     selector: 'app-signup',
@@ -48,7 +47,6 @@ export class Signup2Component implements OnInit {
         
         
         this.loading = true;
-        
         this.userService.registerUser(this.registerForm.value)
             .pipe(first())
             .subscribe(

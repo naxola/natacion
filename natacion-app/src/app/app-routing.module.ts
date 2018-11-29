@@ -8,13 +8,13 @@ import { BlankComponent } from './layouts/blank/blank.component';
 
 
 export const Approutes: Routes = [
-    { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+    { path: '', redirectTo: '/user/home', pathMatch: 'full' },
     {
         path: '',
         component: FullComponent,
         children: [
             
-            { path: 'dashboard', loadChildren: './starter/starter.module#StarterModule' },
+            { path: 'user', loadChildren: './front/front.module#FrontPagesModule' },
             { path: 'component', loadChildren: './component/component.module#ComponentsModule' },
         ], 
         canActivate: [AuthGuard]
@@ -32,7 +32,7 @@ export const Approutes: Routes = [
     },
     {
         path: '**',
-        redirectTo: '/dashboard' 
+        redirectTo: '/user/home' 
     }
 ];
 

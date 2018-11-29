@@ -29,9 +29,21 @@ class Student
      */
     protected $id;
     /**
-     * @ORM\Column(name="name", type="string", length=150)
+     * @ORM\Column(name="firstname", type="string", length=150)
      */
-    protected $name;
+    protected $firstname;
+    /**
+     * @ORM\Column(name="lastname", type="string", length=150)
+     */
+    protected $lastname;
+    /**
+     * @ORM\Column(name="numpie", type="integer")
+     */
+    protected $numpie;
+    /**
+     * @ORM\Column(name="fecha_nac", type="date")
+     */
+    protected $fecha_nacimiento;
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="students")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
@@ -56,17 +68,66 @@ class Student
     /**
      * @return mixed
      */
-    public function getName()
+    public function geFirsttName()
     {
-        return $this->name;
+        return $this->firstname;
     }
     /**
-     * @param mixed $name
+     * @param mixed $firstname
      * @return self
      */
-    public function setName($name)
+    public function setFirstName($firstname)
     {
-        $this->name = $name;
+        $this->firstname = $firstname;
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function geLastName()
+    {
+        return $this->lastname;
+    }
+    /**
+     * @param mixed $lastname
+     * @return self
+     */
+    public function setLastName($lastname)
+    {
+        $this->lastname = $lastname;
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getNumPie()
+    {
+        return $this->numpie;
+    }
+    /**
+     * @param mixed $numpie
+     * @return self
+     */
+    public function setNumPie($numpie)
+    {
+        $this->numpie = $numpie;
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getFechaNacimiento()
+    {
+        return $this->numpie;
+    }
+    /**
+     * @param mixed $fecha_nacimiento
+     * @return self
+     */
+    
+    public function setFechaNacimiento($fecha_nacimiento)
+    {
+        $this->fecha_nacimiento = $fecha_nacimiento;
         return $this;
     }
     /**

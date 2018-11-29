@@ -25,6 +25,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Swagger\Annotations as SWG;
+use DateTime;
 
 /**
  * Class ApiController
@@ -127,12 +128,14 @@ class ApiController extends FOSRestController
             $lastname = $request->request->get('lastName');
             $email = $request->request->get('email');
             $password = $request->request->get('password');
- 
+            $roles = $request->request->get('roles');
+            
             $user = new User();
             $user->setFirstName($firstname);
             $user->setLastName($lastname);
             $user->setEmail($email);
             $user->setUsername($email);
+            $user->setRoles($roles);
             $user->setPlainPassword($password);
             $user->setPassword($encoder->encodePassword($user, $password));
  
@@ -273,12 +276,35 @@ class ApiController extends FOSRestController
      *     description="An error was occurred trying to add new student"
      * )
      *
-     * @SWG\Parameter(
-     *     name="name",
+    * @SWG\Parameter(
+     *     name="firstName",
      *     in="body",
      *     type="string",
-     *     description="The student name",
+     *     description="The firstName",
      *     schema={}
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="lastName",
+     *     in="body",
+     *     type="string",
+     *     description="The lastName",
+     *     schema={}
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="numPie",
+     *     in="body",
+     *     type="string",
+     *     description="The numero de pie",
+     *     schema={}
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="fechaNacimiento",
+     *     in="query",
+     *     type="string",
+     *     description="The Fecha de nacimiento"
      * )
      *
      * @SWG\Tag(name="Student")
@@ -292,22 +318,31 @@ class ApiController extends FOSRestController
         try {
            $code = 201;
            $error = false;
-           $name = $request->request->get("name", null);
+           
+           $firstname = $request->request->get("firstName", null);
+           $lastname = $request->request->get("lastName", null);
+           $numpie = $request->request->get("numPie", null);
+           $fechanacimiento = $request->request->get("fechaNacimiento", null);
            $user = $this->getUser();
- 
-           if (!is_null($name)) {
-               $student = new Student();
-               $student->setName($name);
-               $student->setUser($user);
- 
-               $em->persist($student);
-               $em->flush();
- 
-           } else {
-               $code = 500;
-               $error = true;
-               $message = "An error has occurred trying to add new student - Error: You must to provide a student name";
-           }
+            
+            $student = new Student();
+            
+            $student->setFirstName($firstname);
+            $student->setLastName($lastname);
+            $student->setNumPie($numpie);
+            
+            
+            $date = new DateTime();
+            //$date->createFromFormat('d/m/Y', $fechanacimiento);
+            $date->setDate($fechanacimiento['year'],$fechanacimiento['month'],$fechanacimiento['day']);
+            $date->format('Y-m-d');
+            
+            $student->setFechaNacimiento($date);
+            $student->setUser($user);
+
+            $em->persist($student);
+            $em->flush();
+            
  
         } catch (Exception $ex) {
             $code = 500;

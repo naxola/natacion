@@ -1,0 +1,62 @@
+
+<div class="row">
+    <div class="col-12">
+        <form [formGroup]="registerForm" (ngSubmit)="registrarStudent()" class="form-horizontal form-material" id="studentform">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card col-4">
+                        <div class="card-body">
+                            <h3 class="card-title">Datos personales</h3>
+                            <h6 class="card-subtitle">Datos necesarios para registrar al alumno</h6>
+                            <div class="form-group">
+                                <label>Nombre</label>
+                                <input class="form-control" formControlName="firstName" type="text" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" required="" />
+                                <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+                                    <div *ngIf="f.firstName.errors.required">No has escrito el nombre</div>
+                                </div>                        
+                            </div>
+                            <div class="form-group">
+                                <label>Apellidos</label>
+                                <input class="form-control" formControlName="lastName" type="text" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" required="" />
+                                <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+                                    <div *ngIf="f.lastName.errors.required">No has escrito los apellidos</div>
+                                </div>                    
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Fecha de nacimiento</label>
+                                <div class="input-group">
+                                    <input class="form-control" formControlName="fechaNacimiento" ngbDatepicker #d="ngbDatepicker" [ngClass]="{ 'is-invalid': submitted && f.fechaNacimiento.errors }" required="">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+                                        <i class="fa fa-calendar"></i>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="submitted && f.fechaNacimiento.errors" class="invalid-feedback">
+                                        <div *ngIf="f.fechaNacimiento.errors.required">Fecha de nacimiento incorrecta</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Número de pié (del 20 al 50)</label>
+                                <input class="form-control" formControlName="numPie" type="number" [ngClass]="{ 'is-invalid': submitted && f.numPie.errors }" required="" />
+                                <div *ngIf="submitted && f.numPie.errors" class="invalid-feedback">
+                                    <div *ngIf="f.numPie.errors.required">Es necesario saber el número de pie</div>
+                                </div>                    
+                            </div>
+                            <div class="form-group text-center m-t-20">
+                                <div class="col-xs-12">
+                                        <button class="btn btn-outline-info pull-left" [routerLink]="['/user/home']">Cancelar</button>
+                                        <button [disabled]="loading" class="btn btn-info pull-right">Registrar alumno</button>
+                                        <img *ngIf="loading" src="https://d33wubrfki0l68.cloudfront.net/bb726ed0f16a4eb213c95fad1091d1e1f7b80156/4c8e1/uploads/octo-loader.gif" width="150" />
+                    
+                                    <!--<a [routerLink]="['/authentication/login']" class="btn btn-info btn-lg btn-block btn-rounded text-uppercase waves-effect waves-light">Sign Up</a>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

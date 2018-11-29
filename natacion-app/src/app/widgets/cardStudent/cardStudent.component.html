@@ -1,16 +1,22 @@
 <div class="row">
     <div class="col-lg-4" *ngFor="let student of students">
         <div class="card">
+            
             <img class="card-img-top img-responsive" src="assets/images/big/img1.jpg" alt="Card image cap">
             <div class="card-body">
                 <ul class="list-inline font-14">
                     <li class="p-l-0">20 May 2016</li>
                     <li><a href="javascript:void(0)" class="link">3 Comment</a></li>
                 </ul>
-                <h3 class="font-normal">{{student.name}} &amp; Outdoors</h3>
+                <h3 class="font-normal">{{student.firstname}} {{student.lastname}}</h3>
                 <p class="m-b-0 m-t-10">Titudin venenatis ipsum ac feugiat. Vestibulum ullamcorper quam.</p>
-                <button class="btn btn-success btn-rounded waves-effect waves-light m-t-20">Read more</button>
+                <button class=" btn btn-circle btn-xl btn-primary mdi mdi-account-edit"></button>
             </div>
         </div>
     </div>
+    <div class="col-lg-4">
+            <div class="card">
+                    <button class="btn btn-block btn-lg btn-outline-success" [routerLink]="['/user/register']">+ Añadir Studiante</button>
+            </div>
+        </div>
 </div>
