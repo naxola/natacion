@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -10,7 +11,8 @@ import { StudentRegisterComponent } from './student/student-reg.component';
 
 
 import { FrontPagesRoutes } from './front.router';
-import { CardStudentComponent } from '../widgets/cardStudent/cardStudent.component';
+import { StudentService } from '../core/services/student.service';
+import { AlertService } from '../core/services/alerts.service';
 
 @NgModule({
   imports: [ 
@@ -22,8 +24,11 @@ import { CardStudentComponent } from '../widgets/cardStudent/cardStudent.compone
   ],
   declarations: [
     FrontHomeComponent,
-    StudentRegisterComponent,
-    CardStudentComponent
+    StudentRegisterComponent
+  ],
+  providers:[
+    StudentService,
+    AlertService
   ]
 })
 

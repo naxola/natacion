@@ -8,12 +8,11 @@ import { BlankComponent } from './layouts/blank/blank.component';
 
 
 export const Approutes: Routes = [
-    { path: '', redirectTo: '/user/home', pathMatch: 'full' },
     {
         path: '',
         component: FullComponent,
         children: [
-            
+            { path: '', redirectTo: '/user/home', pathMatch: 'full' },
             { path: 'user', loadChildren: './front/front.module#FrontPagesModule' },
             { path: 'component', loadChildren: './component/component.module#ComponentsModule' },
         ], 
@@ -32,7 +31,7 @@ export const Approutes: Routes = [
     },
     {
         path: '**',
-        redirectTo: '/user/home' 
+        redirectTo: '/' 
     }
 ];
 

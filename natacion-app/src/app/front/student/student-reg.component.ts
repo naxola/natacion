@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { StudentService } from '../../core/services/student.service';
-import { ToastrService } from 'ngx-toastr';
+import { AlertService, AlertMessage, AlertTypes } from '../../core/services/alerts.service';
 
 @Component({
 	templateUrl: './student-reg.component.html'
@@ -12,13 +12,14 @@ export class StudentRegisterComponent implements AfterViewInit {
 	registerForm: FormGroup;
 	loading = false;
 	submitted = false;
+	alertMessage: AlertMessage
 	
 	subtitle:string;	
 
 	constructor(private formBuilder: FormBuilder,
 		private router: Router,
 		private studentService: StudentService,
-		private toastr: ToastrService) 
+		private alertService: AlertService)
 		{
 		this.subtitle = "Register User"
 		this.registerForm = this.formBuilder.group({
@@ -47,23 +48,28 @@ export class StudentRegisterComponent implements AfterViewInit {
         
         
 		this.loading = true;
-		console.log(this.registerForm.value);
 		
         this.studentService.registerStudent(this.registerForm.value)
             .pipe(first())
             .subscribe(
                 data => {
-                    this.toastr.success('Alumno registrado');
-					//this.alertService.success('Registration successful', true);
-                    this.router.navigate(['/user/home']);
+					this.successRegistration();
                 },
                 error => {
-                    this.toastr.error('Algo ha ido mal...', 'Alert!');
-                    //this.alertService.error(error);
-                    this.loading = false;
+					console.log(error);
+                    //this.problemOnRegistration();
 				});
-				
-                
+	}
+	private successRegistration(){
+		this.alertMessage = {text: "Has registrado a un alumno", type: AlertTypes.ALERT_SUCCESS};
+		this.alertService.setMessage(this.alertMessage);
+		this.router.navigate(['/user/home']);
+	}
+	private problemOnRegistration(){
+		this.alertMessage.text= "Ha ocurrido algun error interno. Vuelve a intentarlo";
+		this.alertMessage.type = AlertTypes.ALERT_ERROR;
+		this.alertService.setMessage(this.alertMessage);
+		this.loading = false;
 	}
 	
 }

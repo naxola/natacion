@@ -18,6 +18,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
 
 import { Approutes } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -25,15 +26,13 @@ import { SpinnerComponent } from './shared/spinner.component';
 
 import { AuthGuard } from './core/guards/auth.guard';
 import { UserService } from './core/services/user.service';
-import { StudentService } from './core/services/student.service';
 import { ErrorInterceptor } from './core/helpers/error.interceptor';
 import { JwtInterceptor  } from './core/helpers/jwt.interceptor';
 import { AuthenticationService } from './core/services/authentication.services';
 
+
 import { NgbDatepickerConfig, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDateESParserFormatter } from "./widgets/datepicker/ngbDateESParserFormatter";
-import { ToastrModule } from 'ngx-toastr';
-
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -61,31 +60,25 @@ export function tokenGetter() {
     BrowserAnimationsModule,   
     HttpClientModule,
     FormsModule,
+    ToastrModule.forRoot(), //Había un problema y era que hay que añadirlo antes de NgbModule para que funcione
     NgbModule.forRoot(),
-    RouterModule.forRoot(Approutes, { enableTracing: true }), 
-    ToastrModule.forRoot({
-      timeOut: 5000,
-      positionClass: 'toast-bottom-right',
-      preventDuplicates: true,
-    }), 
+    RouterModule.forRoot(Approutes, { enableTracing: true }),
     PerfectScrollbarModule
+  ],
+  exports: [
+    RouterModule
   ],
   providers: [
     FormBuilder,
     AuthGuard,
     UserService,
-    StudentService,
     AuthenticationService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: NgbDateParserFormatter, useClass: NgbDateESParserFormatter},
-      {
-      provide: PERFECT_SCROLLBAR_CONFIG,
-      useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
-    },{
-    provide: LocationStrategy,
-    useClass: HashLocationStrategy
-  }],
+    { provide: PERFECT_SCROLLBAR_CONFIG, useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG },
+    { provide: LocationStrategy, useClass: HashLocationStrategy}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
