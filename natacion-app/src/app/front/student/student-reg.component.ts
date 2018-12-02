@@ -13,7 +13,7 @@ export class StudentRegisterComponent implements AfterViewInit {
 	loading = false;
 	submitted = false;
 	alertMessage: AlertMessage
-	
+	maxDate ="2017-09-08"	
 	subtitle:string;	
 
 	constructor(private formBuilder: FormBuilder,
@@ -57,7 +57,7 @@ export class StudentRegisterComponent implements AfterViewInit {
                 },
                 error => {
 					console.log(error);
-                    //this.problemOnRegistration();
+                    this.problemOnRegistration();
 				});
 	}
 	private successRegistration(){
@@ -71,5 +71,13 @@ export class StudentRegisterComponent implements AfterViewInit {
 		this.alertService.setMessage(this.alertMessage);
 		this.loading = false;
 	}
-	
+	/*
+	//Para cerrar el Date picker si hace click fuera
+	closeFix(event, datePicker) {
+		if(event.target.offsetParent == null)
+		  datePicker.close();
+		else if(event.target.offsetParent.nodeName != "NGB-DATEPICKER")
+		  datePicker.close();
+	  }
+	*/
 }

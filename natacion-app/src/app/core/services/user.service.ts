@@ -17,7 +17,7 @@ const httpOptions = {
 })
 
 export class UserService{
-    
+    private user: User;
     constructor(private http: HttpClient){}
 
     getAll() {
@@ -38,5 +38,8 @@ export class UserService{
     }
     delete(id: number) {
         return this.http.delete(`${environment.API_URL}/api/users/` + id);
+    }
+    getRoles(){
+        return this.user.roles;
     }
 }

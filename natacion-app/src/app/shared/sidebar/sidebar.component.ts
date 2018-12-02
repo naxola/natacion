@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 
 import { UserService } from '../../core/services/user.service';
 import { User } from '../../core/models/user.model';
+import { equalSegments } from '@angular/router/src/url_tree';
 
 declare var $: any;
 @Component({
@@ -15,9 +16,10 @@ declare var $: any;
 })
 export class SidebarComponent implements OnInit {
 	
-    
+    uRole: number;
     showMenu: string = '';
     showSubMenu: string = '';
+    isAdmin: boolean;
     user: User;
     
     public sidebarnavItems: any[];
@@ -50,6 +52,7 @@ export class SidebarComponent implements OnInit {
             error => {
                 console.log(error);
             });
+            this.uRole = 1;
         } 
     // End open close
     ngOnInit() {
@@ -67,6 +70,7 @@ export class SidebarComponent implements OnInit {
             });
 
         });
+        
         //*ngIf="thing"
         
     }

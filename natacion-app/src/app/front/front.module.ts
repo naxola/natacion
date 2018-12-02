@@ -8,7 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { FrontHomeComponent } from './home/fronthome.component';
 import { StudentRegisterComponent } from './student/student-reg.component';
-
+import { ProfileComponent } from './profile/profile.component';
 
 import { FrontPagesRoutes } from './front.router';
 import { StudentService } from '../core/services/student.service';
@@ -24,8 +24,9 @@ import { AlertService } from '../core/services/alerts.service';
   ],
   declarations: [
     FrontHomeComponent,
-    StudentRegisterComponent
-  ],
+    StudentRegisterComponent,
+    ProfileComponent
+    ],
   providers:[
     StudentService,
     AlertService

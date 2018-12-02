@@ -5,7 +5,6 @@ import { Student } from '../../core/models/student.model';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs/Subscription';
 import { AlertService, AlertMessage, AlertTypes } from '../../core/services/alerts.service';
-import { Alert } from 'selenium-webdriver';
 
 @Component({
 	templateUrl: './fronthome.component.html'
