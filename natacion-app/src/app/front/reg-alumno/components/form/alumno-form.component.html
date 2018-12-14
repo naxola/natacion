@@ -1,0 +1,135 @@
+<div class="row">
+    <div class="col-12">
+
+        
+
+        
+            <div class="card">
+                    <form [formGroup]="reg_SusForm" (ngSubmit)="submitForm(reg_SusForm.value)">
+                    <div class="card-header">
+                        Datos para la inscripción
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                        <div class="col-lg-6 col-md-12">
+                                <div class="col-12">
+                                    <h4>Datos personales del alumno</h4>
+                                </div>
+                                <mat-form-field class="col-12">
+                                    <input matInput placeholder="Nombre del Alumno" formControlName="firstName" required>
+                                    <mat-error *ngFor="let validation of validation_messages.firstName">
+                                        <mat-error class="error-message" *ngIf="reg_SusForm.get('firstName').hasError(validation.type) && (reg_SusForm.get('firstName').dirty || reg_SusForm.get('firstName').touched)">{{validation.message}}</mat-error>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field class="col-12">
+                                    <input matInput placeholder="Apellidos del alumno" formControlName="lastName" required>
+                                    <mat-error *ngFor="let validation of validation_messages.lastName">
+                                        <mat-error class="error-message" *ngIf="reg_SusForm.get('lastName').hasError(validation.type) && (reg_SusForm.get('lastName').dirty || reg_SusForm.get('lastName').touched)">{{validation.message}}</mat-error>
+                                    </mat-error>
+                                </mat-form-field>
+                                
+                                <mat-form-field class="col-lg-6 col-md-12">
+                                    <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker" placeholder="Fecha de nacimiento (dd/mm/aaaa)" formControlName="fechaNacimiento" required>
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                    <mat-error *ngFor="let validation of validation_messages.fechaNacimiento">
+                                        <mat-error class="error-message" *ngIf="reg_SusForm.get('fechaNacimiento').hasError(validation.type) && (reg_SusForm.get('fechaNacimiento').dirty || reg_SusForm.get('fechaNacimiento').touched)">{{validation.message}}</mat-error>
+                                    </mat-error>
+                                </mat-form-field>
+    
+                                <mat-form-field class="col-lg-6 col-md-12">
+                                    <mat-select placeholder="Num pié" formControlName="numPie" required>
+                                        <mat-option>--</mat-option>
+                                        <mat-option *ngFor="let calzado of calzados" [value]="calzado">
+                                        {{calzado.numero}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngFor="let validation of validation_messages.numPie">
+                                        <mat-error class="error-message" *ngIf="reg_SusForm.get('numPie').hasError(validation.type) && (reg_SusForm.get('numPie').dirty || reg_SusForm.get('numPie').touched)">{{validation.message}}</mat-error>
+                                    </mat-error>
+                                    <mat-hint>Pon el número del pié del alumno</mat-hint>
+                                </mat-form-field>
+                                
+                                
+                            </div>
+                            <div class="col-lg-6">
+                                    <div class="col-12">
+                                        <h4>Turnos disponibles para apuntarse</h4>
+                                    </div>
+                                    <div *ngIf="hasDataTable()">
+                                            <div class="spinner-container" *ngIf="dataSource.loading$ | async">
+                                                <mat-spinner></mat-spinner>
+                                            </div>
+                                            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 col-12">
+                                                    <!-- Checkbox Column -->
+                                                    <ng-container matColumnDef="select">
+                                                        <th mat-header-cell *matHeaderCellDef>
+                                                        <mat-checkbox (change)="$event ? masterToggle() : null"
+                                                                        [checked]="selection.hasValue() && isAllSelected()"
+                                                                        [indeterminate]="selection.hasValue() && !isAllSelected()">
+                                                        </mat-checkbox>
+                                                        </th>
+                                                        <td mat-cell *matCellDef="let row">
+                                                        <mat-checkbox (click)="$event.stopPropagation()"
+                                                                        (change)="$event ? selection.toggle(row) : null"
+                                                                        [checked]="selection.isSelected(row)">
+                                                        </mat-checkbox>
+                                                        </td>
+                                                    </ng-container>
+                                                    
+                                                    <!-- Position Column -->
+                                                    <ng-container matColumnDef="turno">
+                                                        <th mat-header-cell *matHeaderCellDef> Turno </th>
+                                                        <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+                                                    </ng-container>
+                                                    
+                                                    <!-- Name Column -->
+                                                    <ng-container matColumnDef="lugar">
+                                                        <th mat-header-cell *matHeaderCellDef> Lugar </th>
+                                                        <td mat-cell *matCellDef="let element"> {{element.localidad}} </td>
+                                                    </ng-container>
+                                                    
+                                                    <ng-container matColumnDef="horario">
+                                                            <th mat-header-cell *matHeaderCellDef> Horario </th>
+                                                            <td mat-cell *matCellDef="let element"> {{element.horario}} </td>
+                                                        </ng-container>
+                            
+                                                    <!-- Weight Column -->
+                                                    <ng-container matColumnDef="fecha_desde">
+                                                        <th mat-header-cell *matHeaderCellDef> Desde </th>
+                                                        <td mat-cell *matCellDef="let element"> {{element.fecha_inicio | date: 'dd/MM/yyyy'}} </td>
+                                                    </ng-container>
+                                                    
+                                                    <!-- Symbol Column -->
+                                                    <ng-container matColumnDef="fecha_hasta">
+                                                        <th mat-header-cell *matHeaderCellDef> Hasta </th>
+                                                        <td mat-cell *matCellDef="let element"> {{element.fecha_fin | date: 'dd/MM/yyyy'}} </td>
+                                                    </ng-container>
+                                                    
+                                                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+                                                        (click)="selection.toggle(row)">
+                                                    </tr>
+                                                </table>   
+                                    </div>
+                               
+                                <div *ngIf="!hasDataTable()">
+                                    <h4 class="m-t-40 no-turnos">No hay turnos disponibles en estos momentos.</h4>
+                                </div>                           
+                            </div>
+                        </div>
+                       
+                    </div>
+                <div class="card-footer ">
+                    <div class="row">
+                        <div class="col-12">
+                                <button class="btn btn-outline-info pull-left" [routerLink]="['/user/home']">Cancelar</button>
+                                <button class="btn btn-info pull-right" type="submit" [disabled]="(!reg_SusForm.valid || !hasSelection())">Guardar datos</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            </div>
+    
+    </div>
+</div>

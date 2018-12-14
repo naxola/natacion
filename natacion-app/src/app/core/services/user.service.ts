@@ -21,10 +21,10 @@ export class UserService{
     constructor(private http: HttpClient){}
 
     getAll() {
-        return this.http.get<User[]>(`${environment.API_URL}/api/users`);
+        return this.http.get<User[]>(`${environment.API_URL}/api/v1/users`);
     }
     getUser() {
-        return this.http.get(`${environment.API_URL}/api/v1/user`);
+        return this.http.get(`${environment.API_URL}/api/v1/user`, httpOptions);
     }
     getById(id: number) {
         return this.http.get(`${environment.API_URL}/api/users/` + id);

@@ -51,6 +51,14 @@ class Student
      */
     protected $user;
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\RegInscripcion", mappedBy="student")
+     */
+    protected $inscripciones;
+    public function __construct()
+    {
+        $this->inscripciones = new ArrayCollection();
+    }
+    /**
      * @ORM\Column(name="created_at", type="datetime")
      */
     protected $createdAt;

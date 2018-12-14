@@ -60,6 +60,7 @@ export class Login2Component implements OnInit, AfterViewInit {
             .pipe(first())
             .subscribe(
                 data => {
+                    console.log(data);
                     this.router.navigate([this.returnUrl]);
                 },
                 error => {

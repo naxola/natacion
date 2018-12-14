@@ -1,0 +1,35 @@
+<table class="table table-striped" [mfData]="data" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage">
+        <thead>
+        <tr>
+          <th style="width: 20%">
+            <mfDefaultSorter by="name">Nombre</mfDefaultSorter>
+          </th>
+          <th style="width: 50%">
+            <mfDefaultSorter by="email">Email</mfDefaultSorter>
+          </th>
+          <th style="width: 10%">
+            <mfDefaultSorter by="age">Teléfono</mfDefaultSorter>
+          </th>
+          <th style="width: 20%">
+            <mfDefaultSorter by="city">Nombre Alumno</mfDefaultSorter>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let user of mf.data">
+            <td>{{user.firstname}} {{user.lastname}}</td>
+            <td>{{user.email}}</td>
+            <td>tleéfon</td>
+              <div *ngFor = "let student of user.students">
+                <td class="text-right">{{student.firstname}} {{student.lastname}}</td> 
+              </div>
+          </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+          <td colspan="4">
+            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+          </td>
+        </tr>
+        </tfoot>
+      </table>

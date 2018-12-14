@@ -5,18 +5,25 @@ import { first } from 'rxjs/operators';
 import { StudentService } from '../../core/services/student.service';
 import { AlertService, AlertMessage, AlertTypes } from '../../core/services/alerts.service';
 
+
 @Component({
-	templateUrl: './student-reg.component.html'
+	templateUrl: './student-reg.component.html',
+	styleUrls: ['./tmplate.css'],
 })
 export class StudentRegisterComponent implements AfterViewInit {
+
 	registerForm: FormGroup;
+	options: FormGroup;
 	loading = false;
 	submitted = false;
 	alertMessage: AlertMessage
 	maxDate ="2017-09-08"	
 	subtitle:string;	
 
+	
+
 	constructor(private formBuilder: FormBuilder,
+		private fb: FormBuilder,
 		private router: Router,
 		private studentService: StudentService,
 		private alertService: AlertService)
@@ -28,6 +35,10 @@ export class StudentRegisterComponent implements AfterViewInit {
 			fechaNacimiento: ['', Validators.required],
 			numPie: ['', Validators.required]
 		});		
+		this.options = fb.group({
+			hideRequired: false,
+			floatLabel: 'auto',
+		  });
 	}
 	ngAfterViewInit(){
 		

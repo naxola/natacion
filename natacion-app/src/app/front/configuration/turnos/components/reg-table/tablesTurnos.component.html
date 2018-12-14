@@ -1,0 +1,51 @@
+
+        <div class="card">
+            <div class="card-header">
+                <h3>Turnos registrados</h3>
+            </div>
+            <div class="card-body">
+                
+                    <mat-form-field>
+                        <input matInput placeholder="Search lessons" #input>
+                    </mat-form-field>
+                    <div class="spinner-container" *ngIf="dataSource.loading$ | async">
+                        <mat-spinner></mat-spinner>
+                    </div>
+                    <mat-table  [dataSource]="dataSource">
+                
+                            <ng-container matColumnDef="turnoNombre">
+                                <mat-header-cell *matHeaderCellDef>Turnos</mat-header-cell>
+                                <mat-cell *matCellDef="let turno">{{turno.nombre}}</mat-cell>
+                            </ng-container>
+                            
+                            <ng-container matColumnDef="localidad">
+                                <mat-header-cell *matHeaderCellDef>Localidad</mat-header-cell>
+                                <mat-cell class="description-cell"
+                                            *matCellDef="let turno">{{turno.localidad}}</mat-cell>
+                            </ng-container>
+                            
+                            <ng-container matColumnDef="fechaInicio">
+                                <mat-header-cell *matHeaderCellDef>Fecha de Inicio de Turno</mat-header-cell>
+                                <mat-cell class="duration-cell"
+                                            *matCellDef="let turno">{{turno.fecha_inicio | date: 'dd/MM/yyyy'}}</mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="fechaFin">
+                                <mat-header-cell *matHeaderCellDef>Fecha de Fin de Turno</mat-header-cell>
+                                <mat-cell class="duration-cell"
+                                            *matCellDef="let turno">{{turno.fecha_fin | date: 'dd/MM/yyyy'}}</mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="fechaLimite">
+                                    <mat-header-cell *matHeaderCellDef>Fecha límite de Turno</mat-header-cell>
+                                    <mat-cell class="duration-cell"
+                                        *matCellDef="let turno">{{turno.fecha_limite | date: 'dd/MM/yyyy'}}</mat-cell>
+                                </ng-container>
+                            
+                            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                            
+                            <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                                
+                    </mat-table>
+                    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+            </div>
+        </div>
+        
