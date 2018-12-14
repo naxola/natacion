@@ -1,4 +1,4 @@
-import {CollectionViewer, DataSource} from "@angular/cdk/collections";
+import { CollectionViewer, DataSource} from "@angular/cdk/collections";
 import { Turno } from '../models/turno.model';
 import { TurnosService } from "./turnos.service";
 import {MatDialog, MatPaginator, MatSort} from '@angular/material';
@@ -21,7 +21,7 @@ export class TurnosDataSource extends DataSource<Turno>{
             this._filterChange.subscribe(() => this._paginator.pageIndex = 0);
         }
 
-    connect(collectionViewer: CollectionViewer): Observable<Turno[]> {
+    connect(): Observable<Turno[]> {
         // Listen for any changes in the base data, sorting, filtering, or pagination
         const displayDataChanges = [
             this._configService.dataChange,
@@ -43,13 +43,15 @@ export class TurnosDataSource extends DataSource<Turno>{
     
             // Grab the page's slice of the filtered sorted data.
             const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
+            
             this.renderedData = sortedData.splice(startIndex, this._paginator.pageSize);
+            console.log(this.renderedData);
             return this.renderedData;
           }
     ));
     }
   
-    disconnect(collectionViewer: CollectionViewer): void {
+    disconnect(): void {
 
     }
 

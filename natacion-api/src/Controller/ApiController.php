@@ -401,7 +401,59 @@ class ApiController extends FOSRestController
  
         return new Response($serializer->serialize($response, "json"));
     }
-
+    /**
+     * @Rest\Get("/v1/all_turnos.{_format}", name="turnos_list_all", defaults={"_format":"json"})
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="Gets all turnos."
+     * )
+     *
+     * @SWG\Response(
+     *     response=500,
+     *     description="An error has occurred trying to get all turnos."
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="id",
+     *     in="query",
+     *     type="string",
+     *     description="The student ID"
+     * )
+     *
+     *
+     * @SWG\Tag(name="Turnos")
+     */
+    public function getAllTurnosAction(Request $request) {
+        $serializer = $this->get('jms_serializer');
+        $em = $this->getDoctrine()->getManager();
+        $turnos = [];
+        $message = "";
+ 
+        try {
+            $code = 200;
+            $error = false;
+ 
+            $turnos = $em->getRepository("App:RegTurno")->findAll();
+ 
+            if (is_null($turnos)) {
+                $turnos = [];
+            }
+ 
+        } catch (Exception $ex) {
+            $code = 500;
+            $error = true;
+            $message = "An error has occurred trying to get all turnos - Error: {$ex->getMessage()}";
+        }
+ 
+        $response = [
+            'code' => $code,
+            'error' => $error,
+            'data' => $code == 200 ? $turnos : $message,
+        ];
+ 
+        return new Response($serializer->serialize($response, "json"));
+    }
     
     /**
      * @Rest\Post("/v1/turno.{_format}", name="turno_add", defaults={"_format":"json"})
@@ -501,7 +553,7 @@ class ApiController extends FOSRestController
         return $date;
     }
      /**
-     * @Rest\Get("/v1/turnos.{_format}", name="turnos_list_all", defaults={"_format":"json"})
+     * @Rest\Get("/v1/turnos.{_format}", name="turnos_list_available_all", defaults={"_format":"json"})
      *
      * @SWG\Response(
      *     response=200,
@@ -521,9 +573,9 @@ class ApiController extends FOSRestController
      * )
      *
      *
-     * @SWG\Tag(name="Board")
+     * @SWG\Tag(name="Turnos")
      */
-    public function getAllTurnosAction(Request $request) {
+    public function getAllTurnosFilteredAction(Request $request) {
         $serializer = $this->get('jms_serializer');
         $em = $this->getDoctrine()->getManager();
         $turnos = [];
@@ -571,15 +623,9 @@ class ApiController extends FOSRestController
      *     description="An error has occurred trying to get all available turnos."
      * )
      *
-     * @SWG\Parameter(
-     *     name="year",
-     *     in="query",
-     *     type="date",
-     *     description="The year to be filtered"
-     * )
      *
      *
-     * @SWG\Tag(name="Board")
+     * @SWG\Tag(name="Turnos")
      */
     public function getTurnosDisponiblesAction(Request $request) {
         $serializer = $this->get('jms_serializer');

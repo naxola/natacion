@@ -12,10 +12,13 @@ import { fromEvent } from 'rxjs';
 })
 
 export class RegistroTurnoComponent implements OnInit{
-	displayedColumns = ['id', 'title', 'state', 'url', 'created_at', 'updated_at', 'actions'];
+	displayedColumns = ['id', 'nombre', 'localidad', 'horario', 'fechaInicio', 'fechaFin', 'fechaLimite', 'actions'];
 
 	turnosDataBase: TurnosService | null;
 	dataSource: TurnosDataSource | null;
+	
+	index: number;
+	id: number;
 
 	constructor(public httpClient: HttpClient,
 				public dialog: MatDialog,
@@ -66,6 +69,7 @@ export class RegistroTurnoComponent implements OnInit{
 			if (!this.dataSource) {
 			  return;
 			}
+			console.log(this.dataSource);
 			this.dataSource.filter = this.filter.nativeElement.value;
 		  });
 		  

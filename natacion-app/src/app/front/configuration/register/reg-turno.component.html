@@ -1,20 +1,15 @@
 <div class="row">
 
 
-<mat-toolbar color="primary">
-    <span>Panel de gestión de turnos para inscripciones - </span>
-    <span class="spacer"></span>
-    Recargar datos: 
-    <button mat-icon-button (click)="refresh()">
-      <mat-icon>refresh</mat-icon>
-    </button>
+  <mat-toolbar color="primary">
+    <span>Tabla maestra de turnos</span>
   </mat-toolbar>
 
   <div class="col-12 mat-elevation-z8">
 
     <div class="form">
       <mat-form-field floatPlaceholder="never" color="accent">
-        <input matInput #filter placeholder="Filtrar turnos">
+        <input matInput #filter placeholder="Buscar en la tabla">
       </mat-form-field>
     </div>
   
@@ -26,32 +21,39 @@
       <!-- ID Column -->
       <ng-container matColumnDef="id">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
-        <mat-cell *matCellDef="let row" >{{row.id}}</mat-cell>
+        <mat-cell *matCellDef="let turno" >{{turno.id}}</mat-cell>
       </ng-container>
   
-      <ng-container matColumnDef="title">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Title</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.title}}</mat-cell>
+
+  
+      <ng-container matColumnDef="nombre">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</mat-header-cell>
+        <mat-cell *matCellDef="let turno"> {{turno.nombre}}</mat-cell>
       </ng-container>
   
-      <ng-container matColumnDef="state">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>State</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.state}}</mat-cell>
+      <ng-container matColumnDef="localidad">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Localidad</mat-header-cell>
+        <mat-cell *matCellDef="let turno"> {{turno.localidad}}</mat-cell>
       </ng-container>
   
-      <ng-container matColumnDef="url">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Url</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.url}}</mat-cell>
+      <ng-container matColumnDef="horario">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Horario</mat-header-cell>
+        <mat-cell *matCellDef="let turno"> {{turno.horario}}</mat-cell>
       </ng-container>
   
-      <ng-container matColumnDef="created_at">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Created at</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.created_at}}</mat-cell>
+      <ng-container matColumnDef="fechaInicio">
+        <mat-header-cell *matHeaderCellDef >Fecha Inicio</mat-header-cell>
+        <mat-cell *matCellDef="let turno"> {{turno.fecha_inicio | date: 'dd/MM/yyyy'}}</mat-cell>
       </ng-container>
   
-      <ng-container matColumnDef="updated_at">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Updated at</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.updated_at}}</mat-cell>
+      <ng-container matColumnDef="fechaFin">
+        <mat-header-cell *matHeaderCellDef >Fecha Fin</mat-header-cell>
+        <mat-cell *matCellDef="let turno"> {{turno.fecha_fin | date: 'dd/MM/yyyy'}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="fechaLimite">
+        <mat-header-cell *matHeaderCellDef >Fecha Limite</mat-header-cell>
+        <mat-cell *matCellDef="let turno"> {{turno.fecha_limite | date: 'dd/MM/yyyy'}}</mat-cell>
       </ng-container>
   
       <!-- actions -->
@@ -61,7 +63,7 @@
             <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
           </button>
         </mat-header-cell>
-  <!--
+  
 <mat-cell *matCellDef="let row; let i=index;">
           <button mat-icon-button color="accent" (click)="startEdit(i, row.id, row.title, row.state, row.url, row.created_at, row.updated_at)">
             <mat-icon aria-label="Edit">edit</mat-icon>
@@ -71,8 +73,6 @@
             <mat-icon aria-label="Delete">delete</mat-icon>
           </button>
         </mat-cell>
-  -->
-        
       </ng-container>
   
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

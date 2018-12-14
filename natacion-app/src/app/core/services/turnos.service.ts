@@ -31,8 +31,9 @@ export class TurnosService{
     }
     /** CRUD METHODS */
     getAll(): void {
-        this.httpClient.get<Turno[]>(`${environment.API_URL}/api/v1/turno`).subscribe(data => {
-            this.dataChange.next(data);
+        this.httpClient.get<Turno[]>(`${environment.API_URL}/api/v1/all_turnos`).subscribe(data => {
+            this.dataChange.next(data['data']);
+            console.log(data['data']);
         },
         (error: HttpErrorResponse) => {
             console.log (error.name + ' ' + error.message);

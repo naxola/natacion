@@ -74,6 +74,7 @@ export class FrontHomeComponent implements AfterViewInit {
 			
 			},
 			error =>{
+				console.log(error);
 				setTimeout(()=>this.toastrService.error("Algo ha ido mal al cargar los usuarios","Ooops..."));
 			}
 		);
