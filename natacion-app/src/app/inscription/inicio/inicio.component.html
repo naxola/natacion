@@ -1,0 +1,21 @@
+<section id="wrapper">
+  
+        <div class="login-register" style="background-image:url(../assets/images/background/login-register.jpg);">        
+          <div class="row">
+                <div class="col-2"></div>
+              <div class="col-8">
+                  <div class="card">
+                      <form [formGroup]="registroAlumno" (ngSubmit)="submitForm(registroAlumno.value)">
+                          <div class="card-header">
+                            Formulario de inscripcion en la escuela de Natacion Jesús Franco.
+                          </div>
+                          <div class="card-body">
+                                <button class="btn btn-block btn-lg btn-info" type="button"  [routerLink]="['/inscripcion/registro']">Comenzar inscripcion</button>
+                          </div>
+                      </form>
+                  </div>
+              </div>
+              <div class="col-2"></div>
+          </div>
+        </div>
+    </section>

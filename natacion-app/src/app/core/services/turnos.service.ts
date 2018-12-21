@@ -1,8 +1,10 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
-import {Turno} from '../models/turno.model';
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Injectable} from '@angular/core';
+import { BehaviorSubject, Observable} from 'rxjs';
+import { Turno} from '../models/turno.model';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../../environments/environment.prod';
+import { ToastrService } from 'ngx-toastr';
+import { map } from "rxjs/operators";
 
 const httpOptions = {
     headers: new HttpHeaders({
@@ -21,7 +23,8 @@ export class TurnosService{
     // Temporarily stores data from dialogs
     dialogData: any;
 
-    constructor(private httpClient: HttpClient){}
+    constructor(private httpClient: HttpClient,
+                private toasterService: ToastrService){}
 
     get data(): Turno[] {
         return this.dataChange.value;
@@ -33,7 +36,7 @@ export class TurnosService{
     getAll(): void {
         this.httpClient.get<Turno[]>(`${environment.API_URL}/api/v1/all_turnos`).subscribe(data => {
             this.dataChange.next(data['data']);
-            console.log(data['data']);
+            //this.toasterService.success('Datos cargados correctamente');
         },
         (error: HttpErrorResponse) => {
             console.log (error.name + ' ' + error.message);
@@ -41,16 +44,32 @@ export class TurnosService{
     }
 
     // DEMO ONLY, you can find working methods below
-    addIssue (turno: Turno): void {
+    addItem (turno: Turno): void {
+        this.httpClient.post(`${environment.API_URL}/api/v1/turno`, turno, httpOptions).subscribe(data => {
+                this.dataChange.next(data['data']);
+                this.toasterService.success('Successfully added');
+            },
+            (err: HttpErrorResponse) => {
+                this.toasterService.error(err.name + ' ' + err.message, 'Ha ocurrido un error: ');
+          });
+    }
+
+    updateItem (turno: Turno): void {
         this.dialogData = turno;
     }
 
-    updateIssue (turno: Turno): void {
-        this.dialogData = turno;
-    }
-
-    deleteIssue (id: number): void {
+    deleteItem (id: number): void {
         console.log(id);
+    }
+    findTurnosDisponibles(){
+        this.httpClient.get(`${environment.API_URL}/api/turnos_disponibles`, {
+            params: new HttpParams()
+        }).subscribe(data => {
+            this.dataChange.next(data['data']);
+        },
+        (err: HttpErrorResponse) => {
+            this.toasterService.error(err.name + ' ' + err.message, 'Ha ocurrido un error: ');
+      });
     }
 }
 

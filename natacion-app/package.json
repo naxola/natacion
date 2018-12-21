@@ -50,6 +50,7 @@
     "popper.js": "^1.12.5",
     "rxjs": "^6.2.0",
     "rxjs-compat": "^6.0.0-rc.0",
+    "sweetalert2": "^7.32.4",
     "zone.js": "^0.8.4"
   },
   "devDependencies": {

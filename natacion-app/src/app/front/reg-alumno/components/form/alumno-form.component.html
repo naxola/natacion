@@ -60,6 +60,11 @@
                                             <div class="spinner-container" *ngIf="dataSource.loading$ | async">
                                                 <mat-spinner></mat-spinner>
                                             </div>
+                                            <div >
+                                                    <mat-form-field floatPlaceholder="never" color="accent">
+                                                      <input matInput #filter placeholder="Buscar en la tabla">
+                                                    </mat-form-field>
+                                                  </div>
                                             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 col-12">
                                                     <!-- Checkbox Column -->
                                                     <ng-container matColumnDef="select">

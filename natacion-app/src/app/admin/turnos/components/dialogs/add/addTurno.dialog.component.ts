@@ -1,21 +1,21 @@
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { Component, Inject } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
-import { Turno } from '../../../../../../core/models/turno.model';
-import { TurnosService } from '../../../../../../core/services/turnos.service';
+import { FormControl, Validators } from "@angular/forms";
+import { Component, Inject } from "@angular/core";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
+import { Turno } from "../../../../../core/models/turno.model";
+import { TurnosService } from "../../../../../core/services/turnos.service";
 
 @Component({
-    selector: 'app-add.dialog',
-    templateUrl: './add.dialog.component.html',
-    styleUrls: ['./add.dialog.component.css']
+    selector: 'app-addturno.dialog',
+    templateUrl: './addTurno.dialog.component.html',
+    styleUrls: ['./addTurno.dialog.component.css']
   })
 
-export class AddDialogComponent {
+export class AddTurnoDialogComponent {
     formControl = new FormControl('', [
         Validators.required
         // Validators.email,
     ]);
-    constructor(public dialogRef: MatDialogRef<AddDialogComponent>, 
+    constructor(public dialogRef: MatDialogRef<AddTurnoDialogComponent>, 
                 @Inject(MAT_DIALOG_DATA) public data: Turno,
                 public dataService: TurnosService){
     }

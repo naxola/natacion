@@ -17,6 +17,7 @@ use App\Entity\User;
 use App\Entity\Student;
 use App\Entity\RegTurno;
 use App\Entity\RegInscripcion;
+use App\Entity\RegInscripciones;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -521,12 +522,10 @@ class ApiController extends FOSRestController
             
             $turno->setNombreTurno($nombre);
             $turno->setLocalidad($localidad['name']);
-            $date = new DateTime();
-            $date->setDate(1985,12,5);
-            $date->format('Y-m-d');
-            $turno->setFechaInicio($this->setDateFormat($fecha_inicio));
-            $turno->setFechaFin($this->setDateFormat($fecha_fin));
-            $turno->setFechaLimite($this->setDateFormat($fecha_limite));
+
+            $turno->setFechaInicio($this->setDateFormat($fecha_inicio['_i']));
+            $turno->setFechaFin($this->setDateFormat($fecha_fin['_i']));
+            $turno->setFechaLimite($this->setDateFormat($fecha_limite['_i']));
 
             $em->persist($turno);
             $em->flush();
@@ -548,7 +547,7 @@ class ApiController extends FOSRestController
     }
     private function setDateFormat($fecha){
         $date = new DateTime();
-        $date->setDate($fecha['year'],$fecha['month'],$fecha['day']);
+        $date->setDate($fecha['year'],$fecha['month'],$fecha['date']);
         $date->format('Y-m-d');
         return $date;
     }
@@ -611,7 +610,7 @@ class ApiController extends FOSRestController
         return new Response($serializer->serialize($response, "json"));
     }
     /**
-     * @Rest\Get("/v1/turnos_disponibles.{_format}", name="turnos_list_all_available", defaults={"_format":"json"})
+     * @Rest\Get("/turnos_disponibles.{_format}", name="turnos_list_all_available", defaults={"_format":"json"})
      *
      * @SWG\Response(
      *     response=200,
@@ -658,9 +657,55 @@ class ApiController extends FOSRestController
         ];
         return new Response($serializer->serialize($response, "json"));
     }
-    
     /**
-     * @Rest\Post("/v1/inscripcion.{_format}", name="inscripcion_add", defaults={"_format":"json"})
+     * @Rest\Get("/v1/all_registers.{_format}", name="turnos_list_all_available", defaults={"_format":"json"})
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="Gets all turnos disponibles"
+     * )
+     *
+     * @SWG\Response(
+     *     response=500,
+     *     description="An error has occurred trying to get all available turnos."
+     * )
+     *
+     *
+     *
+     * @SWG\Tag(name="Inscripciones")
+     */
+    public function getAllInscripciones(Request $request) {
+        $serializer = $this->get('jms_serializer');
+        $em = $this->getDoctrine()->getManager();
+        $inscripciones = [];
+        $message = "";
+ 
+        try {
+            $code = 200;
+            $error = false;
+ 
+            $inscripciones = $em->getRepository("App:RegInscripciones")->findAll();
+ 
+            if (is_null($inscripciones)) {
+                $inscripciones = [];
+            }
+ 
+        } catch (Exception $ex) {
+            $code = 500;
+            $error = true;
+            $message = "An error has occurred trying to get all turnos - Error: {$ex->getMessage()}";
+        }
+ 
+        $response = [
+            'code' => $code,
+            'error' => $error,
+            'data' => $code == 200 ? $inscripciones : $message,
+        ];
+ 
+        return new Response($serializer->serialize($response, "json"));
+    }
+    /**
+     * @Rest\Post("/inscripcion.{_format}", name="inscripcion_add", defaults={"_format":"json"})
      *
      * @SWG\Response(
      *     response=201,
@@ -712,7 +757,7 @@ class ApiController extends FOSRestController
      *     schema={}
      * )
      *
-     * @SWG\Tag(name="Task")
+     * @SWG\Tag(name="RegUserTurno")
      */
     public function addInscripcionAction(Request $request) {
         $serializer = $this->get('jms_serializer');
@@ -723,17 +768,25 @@ class ApiController extends FOSRestController
             $code = 201;
             $error = false;
             $turnos = $request->request->get("turnos", null);
-            $id_alumno= $request->request->get("id_student", null);
+            $student = $request->request->get("student", null);
 
-            if (!is_null($turnos) && !is_null($id_alumno)) {
-                $student = $em->getRepository("App:Student")->find($id_alumno);
+            if (!is_null($turnos)) {
+                $inscripcion = new RegInscripciones();
                 
                 foreach($turnos as $turno){
                     
-                    $inscripcion = new RegInscripcion();
-                    $inscripcion->setStudent($student);
-                    $inscripcion->setNumGrupo(0);
-                    $inscripcion->setNombreTurno($turno['nombre']);
+                    
+
+                    $inscripcion->setUserFirstName($request->request->get("userFirstName", null));
+                    $inscripcion->setUserLasttName($request->request->get("userLastName", null));
+                    $inscripcion->setUserMail($request->request->get("userMail", null));
+                    $inscripcion->setUserPhone($request->request->get("userPhone", null));
+                    $inscripcion->setStudentFirstName($student['firstName']);
+                    $inscripcion->setStudentLasttName($student['lastName']);
+                    $inscripcion->setStudentBirthDate(new DateTime($student['fechaNacimiento']));
+                    $inscripcion->setStudentNumPie($student['numPie']);
+                    $inscripcion->setStudentGroup(0);
+                    $inscripcion->setTurnoName($turno['nombre']);
                     $inscripcion->setHorario($turno['horario']);
                     $inscripcion->setLocalidad($turno['localidad']);
                     $inscripcion->setFechaInicio(new DateTime($turno['fecha_inicio']));
@@ -746,7 +799,6 @@ class ApiController extends FOSRestController
             } else {
                 $code = 500;
                 $error = true;
-                $data = ['turnos'=> $turnos, 'id'=> $id_alumno];
                 $message = "An error has occurred trying to add new registro - Error: You must to provide all the required fields";
             }
         } catch (Exception $ex) {
@@ -757,7 +809,7 @@ class ApiController extends FOSRestController
         $response = [
             'code' => $code,
             'error' => $error,
-            'data' => $code == 201 ? $task : $message,
+            'data' => $code == 201 ? $inscripcion : $message,
         ];
         return new Response($serializer->serialize($response, "json"));
     }

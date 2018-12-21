@@ -31,7 +31,7 @@ export class Login2Component implements OnInit, AfterViewInit {
         this.authenticationService.logout();
 
         // get return url from route parameters or default to '/'
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/admin';
     }
 
     ngAfterViewInit() {

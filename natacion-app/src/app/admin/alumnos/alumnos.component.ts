@@ -1,29 +1,28 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { MatDialog, MatPaginator, MatSort } from '@angular/material';
-import { AddDialogComponent } from './components/dialogs/add/add.dialog.component';
-import { Turno } from '../../../core/models/turno.model';
-import { TurnosService } from '../../../core/services/turnos.service';
-import { TurnosDataSource } from '../../../core/services/turnos.datasource';
+import { Component, AfterViewInit, OnInit, ViewChild, ElementRef } from '@angular/core';
+
+import { MatPaginator, MatSort, MatDialog } from '@angular/material';
 import { fromEvent } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { HttpClient } from '@angular/common/http';
+import { AddAlumnoDialogComponent } from './components/dialogs/add/addAlumno.dialog.component';
+import { InscripcionesService } from '../../core/services/inscripciones.service';
+import { InscripcionesDataSource } from '../../core/services/inscripciones.datasource';
 
 @Component({
-	templateUrl: './reg-turno.component.html'
+	templateUrl: './alumnos.component.html'
 })
+export class AlumnosComponent implements OnInit {
+	displayedColumns = ['id', 'nombre_usuario', 'phone_usuario', 'nombre_student', 'localidad', 'nombre', 'horario', 'actions'];
 
-export class RegistroTurnoComponent implements OnInit{
-	displayedColumns = ['id', 'nombre', 'localidad', 'horario', 'fechaInicio', 'fechaFin', 'fechaLimite', 'actions'];
-
-	turnosDataBase: TurnosService | null;
-	dataSource: TurnosDataSource | null;
+	inscripcionesDataBase: InscripcionesService | null;
+	dataSource: InscripcionesDataSource | null;
 	
 	index: number;
 	id: number;
 
 	constructor(public httpClient: HttpClient,
 				public dialog: MatDialog,
-				public dataService: TurnosService,
+				public dataService: InscripcionesService,
 				public toastrService: ToastrService) 
 	{
 		
@@ -41,7 +40,7 @@ export class RegistroTurnoComponent implements OnInit{
 	}
 	addNew() {
 		
-		const dialogRef = this.dialog.open(AddDialogComponent, {
+		const dialogRef = this.dialog.open(AddAlumnoDialogComponent, {
 				data: {}//: {turno: Turno }
 			});
 			
@@ -49,7 +48,7 @@ export class RegistroTurnoComponent implements OnInit{
 			if (result === 1) {
 				// After dialog is closed we're doing frontend updates
 				// For add we're just pushing a new row inside DataService
-				this.turnosDataBase.dataChange.value.push(this.dataService.getDialogData());
+				this.inscripcionesDataBase.dataChange.value.push(this.dataService.getDialogData());
 				this.refreshTable();
 			}
 		});
@@ -62,8 +61,8 @@ export class RegistroTurnoComponent implements OnInit{
 	}
 	public loadData() {
 		
-		this.turnosDataBase = new TurnosService(this.httpClient, this.toastrService);
-		this.dataSource = new TurnosDataSource(this.turnosDataBase, this.paginator, this.sort);
+		this.inscripcionesDataBase = new InscripcionesService(this.httpClient, this.toastrService);
+		this.dataSource = new InscripcionesDataSource(this.inscripcionesDataBase, this.paginator, this.sort);
 		fromEvent(this.filter.nativeElement, 'keyup')
 		  // .debounceTime(150)
 		  // .distinctUntilChanged()

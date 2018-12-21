@@ -1,0 +1,15 @@
+.mat-row:nth-child(even){
+    background-color: azure;
+    }
+
+.mat-row:nth-child(odd){
+    background-color:none;
+    }
+th.mat-header-cell {
+    background-color: rgb(247, 247, 247);
+    text-align: center;
+}
+
+td {
+    text-align: center;
+}

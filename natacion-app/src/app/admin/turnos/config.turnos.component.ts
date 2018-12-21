@@ -1,18 +1,17 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { MatDialog, MatPaginator, MatSort } from '@angular/material';
-import { AddDialogComponent } from './components/dialogs/add/add.dialog.component';
-import { Turno } from '../../../core/models/turno.model';
-import { TurnosService } from '../../../core/services/turnos.service';
-import { TurnosDataSource } from '../../../core/services/turnos.datasource';
+import { Component, AfterViewInit, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { TurnosService } from '../../core/services/turnos.service';
+import { TurnosDataSource } from '../../core/services/turnos.datasource';
+import { MatPaginator, MatSort, MatDialog } from '@angular/material';
 import { fromEvent } from 'rxjs';
+import { AddTurnoDialogComponent } from './components/dialogs/add/addTurno.dialog.component';
 import { ToastrService } from 'ngx-toastr';
+import { HttpClient } from '@angular/common/http';
+
 
 @Component({
-	templateUrl: './reg-turno.component.html'
+	templateUrl: './config.turnos.component.html'
 })
-
-export class RegistroTurnoComponent implements OnInit{
+export class ConfigTurnosComponent implements OnInit {
 	displayedColumns = ['id', 'nombre', 'localidad', 'horario', 'fechaInicio', 'fechaFin', 'fechaLimite', 'actions'];
 
 	turnosDataBase: TurnosService | null;
@@ -41,7 +40,7 @@ export class RegistroTurnoComponent implements OnInit{
 	}
 	addNew() {
 		
-		const dialogRef = this.dialog.open(AddDialogComponent, {
+		const dialogRef = this.dialog.open(AddTurnoDialogComponent, {
 				data: {}//: {turno: Turno }
 			});
 			

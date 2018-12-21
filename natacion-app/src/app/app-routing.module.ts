@@ -10,24 +10,22 @@ import { BlankComponent } from './layouts/blank/blank.component';
 export const Approutes: Routes = [
     {
         path: '',
-        component: FullComponent,
-        children: [
-            { path: '', redirectTo: '/user/home', pathMatch: 'full' },
-            { path: 'user', loadChildren: './front/front.module#FrontPagesModule' },
-            { path: 'component', loadChildren: './component/component.module#ComponentsModule' },
-        ], 
-        canActivate: [AuthGuard]
-    },
-    {
-        path: '',
         component: BlankComponent,
         children: [         
-            {
-                path: 'authentication',
-                loadChildren: './authentication/authentication.module#AuthenticationModule'
-            }
+            { path: '', redirectTo: '/inscripcion', pathMatch: 'full' },
+            { path: 'inscripcion', loadChildren: './inscription/inscripcion.module#InscripcionModule' },
+            { path: 'authentication', loadChildren: './authentication/authentication.module#AuthenticationModule' }
             
         ]
+    },
+    {
+        path: 'admin',
+        component: FullComponent,
+        children: [
+            { path: '', redirectTo: '/admin/home', pathMatch: 'full' },
+            { path: '', loadChildren: './admin/admin.module#AdminModule' },
+        ], 
+        canActivate: [AuthGuard]
     },
     {
         path: '**',

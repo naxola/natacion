@@ -2,8 +2,8 @@ export class Turno {
     id: number;
     nombre: string;
     fechaInicio: Date;
-    fechaFin: string;
-    fechaLimite: string;
+    fechaFin: Date;
+    fechaLimite: Date;
     horario: string;
     Localidad: string;
 }

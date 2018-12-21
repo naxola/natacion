@@ -20,6 +20,7 @@ export class TurnosDataSource extends DataSource<Turno>{
                 // Reset to the first page when the user changes the filter.
             this._filterChange.subscribe(() => this._paginator.pageIndex = 0);
         }
+        
 
     connect(): Observable<Turno[]> {
         // Listen for any changes in the base data, sorting, filtering, or pagination
@@ -45,7 +46,6 @@ export class TurnosDataSource extends DataSource<Turno>{
             const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
             
             this.renderedData = sortedData.splice(startIndex, this._paginator.pageSize);
-            console.log(this.renderedData);
             return this.renderedData;
           }
     ));

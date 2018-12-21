@@ -13,27 +13,27 @@ export const FrontPagesRoutes: Routes = [
     children: [
       { path: 'home', component: FrontHomeComponent, data: { 
                                                             title: 'Home', 
-                                                            urls: [{title: 'Home', url: '/'},{title: 'Inicio'}] 
+                                                            urls: [{title: 'Home', url: '/admin'},{title: 'Inicio'}] 
                                                           }},
       { path: 'register', component: StudentRegisterComponent, data: { 
                                                             title: 'Registro de alumno', 
-                                                            urls: [{title: 'Home',url: '/'},{title: 'Registro de alumno'}]
+                                                            urls: [{title: 'Home',url: '/admin'},{title: 'Registro de alumno'}]
                                                             }},
       { path: 'profile', component: ProfileComponent, data: { 
                                                             title: 'Perfil de usuario', 
-                                                            urls: [{title: 'Home',url: '/'},{title: 'Perfil de usuario'}]
+                                                            urls: [{title: 'Home',url: '/admin'},{title: 'Perfil de usuario'}]
                                                             }},
       { path: 'config/turnos', component: ConfigTurnosComponent, data: { 
                                                               title: 'Configuración de turnos', 
-                                                              urls: [{title: 'Home',url: '/'},{title: 'Configuracion de turnos'}]
+                                                              urls: [{title: 'Home',url: '/admin'},{title: 'Configuracion de turnos'}]
                                                               }},
       { path: 'alumno', component: RegAlumnoComponent, data: { 
                                                                 title: 'Alumno', 
-                                                                urls: [{title: 'Home',url: '/'},{title: 'Alumno'}]
+                                                                urls: [{title: 'Home',url: '/admin'},{title: 'Alumno'}]
                                                                 }},
       { path: 'turnos', component: RegistroTurnoComponent, data: { 
                                                                   title: 'Turnos', 
-                                                                  urls: [{title: 'Home',url: '/'},{title: 'Registro de turnos'}]
+                                                                  urls: [{title: 'Home',url: '/admin'},{title: 'Registro de turnos'}]
                                                                   }}
     ]
   }

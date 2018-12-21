@@ -1,0 +1,176 @@
+<section id="wrapper">
+  
+    <div class="login-register" style="background-image:url(../assets/images/background/login-register.jpg);">        
+      <div class="row">
+            <div class="col-lg-2"></div>
+          <div class="col-lg-8 col-md-12">
+                <form [formGroup]="registroAlumno" (ngSubmit)="submitForm(registroAlumno.value)" class="col-lg-12">
+              <div class="card">
+                      <div class="card-header">
+                          Datos para la inscripción
+                      </div>
+                      <div class="card-body">
+                        <div class="row">
+                                
+                                <div class="col-12">
+                                        <h4>Datos personales del padre/madre/tutor</h4>
+                                    </div>           
+                                    <mat-form-field class="col-lg-6 col-md-12">
+                                        <input matInput placeholder="Nombre del padre/madre/tutor" formControlName="userFirstName" required>
+                                        <mat-error *ngFor="let validation of validation_messages.userFirstName">
+                                            <mat-error class="error-message" *ngIf="registroAlumno.get('userFirstName').hasError(validation.type) && (registroAlumno.get('userFirstName').dirty || registroAlumno.get('userFirstName').touched)">{{validation.message}}</mat-error>
+                                        </mat-error>
+                                    </mat-form-field>
+                                    <mat-form-field class="col-lg-6 col-md-12">
+                                        <input matInput placeholder="Apellidos del padre/madre/tutor" formControlName="userLastName" required>
+                                        <mat-error *ngFor="let validation of validation_messages.userLastName">
+                                            <mat-error class="error-message" *ngIf="registroAlumno.get('userLastName').hasError(validation.type) && (registroAlumno.get('userLastName').dirty || registroAlumno.get('userLastName').touched)">{{validation.message}}</mat-error>
+                                        </mat-error>
+                                    </mat-form-field>
+                                    <mat-form-field class="col-lg-6 col-md-12">
+                                            <input matInput placeholder="Correo electrónico" formControlName="userMail" required>
+                                            <mat-icon matSuffix>email</mat-icon>
+                                            <mat-error *ngFor="let validation of validation_messages.userMail">
+                                                <mat-error class="error-message" *ngIf="registroAlumno.get('userMail').hasError(validation.type) && (registroAlumno.get('userMail').dirty || registroAlumno.get('userMail').touched)">{{validation.message}}</mat-error>
+                                            </mat-error>
+                                    </mat-form-field>
+                                    <mat-form-field class="col-lg-6 col-md-12">
+                                            <input matInput placeholder="Teléfono móvil" formControlName="userPhone" required>
+                                            <mat-icon matSuffix>phone</mat-icon>
+                                            <mat-error *ngFor="let validation of validation_messages.userPhone">
+                                                <mat-error class="error-message" *ngIf="registroAlumno.get('userPhone').hasError(validation.type) && (registroAlumno.get('userPhone').dirty || registroAlumno.get('userPhone').touched)">{{validation.message}}</mat-error>
+                                            </mat-error>
+                                            <mat-hint>Include area code</mat-hint>
+                                    </mat-form-field>
+
+                            <div class="col-12">
+                                <h4 class="m-t-30">Datos personales del alumno</h4>
+                            </div>           
+                            <mat-form-field class="col-lg-6 col-md-12">
+                                <input matInput placeholder="Nombre del Alumno" formControlName="studentFirstName" required>
+                                <mat-error *ngFor="let validation of validation_messages.studentFirstName">
+                                    <mat-error class="error-message" *ngIf="registroAlumno.get('studentFirstName').hasError(validation.type) && (registroAlumno.get('studentFirstName').dirty || registroAlumno.get('studentFirstName').touched)">{{validation.message}}</mat-error>
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field class="col-lg-6 col-md-12">
+                                <input matInput placeholder="Apellidos del alumno" formControlName="studentLastName" required>
+                                <mat-error *ngFor="let validation of validation_messages.studentLastName">
+                                    <mat-error class="error-message" *ngIf="registroAlumno.get('studentLastName').hasError(validation.type) && (registroAlumno.get('studentLastName').dirty || registroAlumno.get('studentLastName').touched)">{{validation.message}}</mat-error>
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field class="col-lg-6 col-md-12">
+                                    <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker" placeholder="Fecha de nacimiento (dd/mm/aaaa)" formControlName="fechaNacimiento" required>
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                    <mat-error *ngFor="let validation of validation_messages.fechaNacimiento">
+                                        <mat-error class="error-message" *ngIf="registroAlumno.get('fechaNacimiento').hasError(validation.type) && (registroAlumno.get('fechaNacimiento').dirty || registroAlumno.get('fechaNacimiento').touched)">{{validation.message}}</mat-error>
+                                    </mat-error>
+                                </mat-form-field>
+
+                            <mat-form-field class="col-lg-6 col-md-12">
+                                    <mat-select placeholder="Num pié" formControlName="numPie" required>
+                                        <mat-option>--</mat-option>
+                                        <mat-option *ngFor="let calzado of calzados" [value]="calzado">
+                                        {{calzado.numero}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngFor="let validation of validation_messages.numPie">
+                                            <mat-error class="error-message" *ngIf="registroAlumno.get('numPie').hasError(validation.type) && (registroAlumno.get('numPie').dirty || registroAlumno.get('numPie').touched)">{{validation.message}}</mat-error>
+                                    </mat-error>
+                                    <mat-hint>Pon el número del pié del alumno</mat-hint>
+                                </mat-form-field>
+                                <div class="col-12">
+                                    <h4 class="m-t-30">Turnos disponibles para apuntarse</h4>
+                                </div>
+                           
+                                <div class="col-12">
+                                    
+                                            
+                                        
+
+                                
+                                            <table mat-table [dataSource]="dataSource" class="mat-elevation-none col-12">
+                                                
+                                       
+                                                    <!-- Checkbox Column -->
+                                                    <ng-container matColumnDef="select">
+                                                        <th mat-header-cell *matHeaderCellDef>
+                                                        <mat-checkbox (change)="$event ? masterToggle() : null"
+                                                                        [checked]="selection.hasValue() && isAllSelected()"
+                                                                        [indeterminate]="selection.hasValue() && !isAllSelected()">
+                                                        </mat-checkbox>
+                                                        </th>
+                                                        <td mat-cell *matCellDef="let row">
+                                                        <mat-checkbox (click)="$event.stopPropagation()"
+                                                                        (change)="$event ? selection.toggle(row) : null"
+                                                                        [checked]="selection.isSelected(row)">
+                                                        </mat-checkbox>
+                                                        </td>
+                                                    </ng-container>
+                                                    
+                                                   
+                                                    <ng-container matColumnDef="turno">
+                                                        <th mat-header-cell *matHeaderCellDef> Turno </th>
+                                                        <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+                                                    </ng-container>
+                                                    
+                                                   
+                                                    <ng-container matColumnDef="lugar">
+                                                        <th mat-header-cell *matHeaderCellDef> Lugar </th>
+                                                        <td mat-cell *matCellDef="let element"> {{element.localidad}} </td>
+                                                    </ng-container>
+                                                    
+                                                    <ng-container matColumnDef="horario">
+                                                        <th mat-header-cell *matHeaderCellDef> Horario </th>
+                                                        <td mat-cell *matCellDef="let element"> {{element.horario}} </td>
+                                                    </ng-container>
+                            
+                                                    
+                                                    <ng-container matColumnDef="fecha_desde">
+                                                        <th mat-header-cell *matHeaderCellDef> Comienza el </th>
+                                                        <td mat-cell *matCellDef="let element"> {{element.fecha_inicio | date: 'd-MMM'}} </td>
+                                                    </ng-container>
+                                                    
+                                                  
+                                                    <ng-container matColumnDef="fecha_hasta">
+                                                        <th mat-header-cell *matHeaderCellDef> Finaliza el </th>
+                                                        <td mat-cell *matCellDef="let element"> {{element.fecha_fin | date: 'd-MMM'}} </td>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="fecha_limite">
+                                                            <th mat-header-cell *matHeaderCellDef> Fecha limpite para apuntarse </th>
+                                                            <td mat-cell *matCellDef="let element"> {{element.fecha_limite | date: 'd-MMM'}} </td>
+                                                    </ng-container>
+                                                    
+                                                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+                                                        (click)="selection.toggle(row)">
+                                                    </tr>
+                                                </table>   
+                                                <div class="text-center">
+                                                    <img div width="150" *ngIf="dataSource.loading$ | async" src="https://d33wubrfki0l68.cloudfront.net/bb726ed0f16a4eb213c95fad1091d1e1f7b80156/4c8e1/uploads/octo-loader.gif" />
+                                                </div>
+                                                <div class="no-results text-center" [style.display]="dataSource.renderedData.length == 0 ? '' : 'none'">
+                                                    La inscripción está cerrada. Atento al próximo verano, que abriremos más!
+                                                </div>
+                                                    
+                                </div>
+                                 
+                        </div>
+                      </div>
+                      <div class="card-footer ">
+                            <div class="row">
+                                <div class="col-12">
+                                        <button class="btn btn-outline-info pull-left" [routerLink]="['/inscripcion']">Cancelar</button>
+                                        <button class="btn btn-info pull-right" type="submit" [disabled]="(!registroAlumno.valid || !hasSelection())">Registrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    
+              </div>
+            </form>
+          </div>
+          <div class="col-lg-2"></div>
+      </div>
+    </div>
+</section>
