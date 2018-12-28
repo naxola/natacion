@@ -5,6 +5,8 @@ import swal from 'sweetalert2';
 import { RegTurnoUserStudent } from '../models/regturnouserstudent.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { Student } from '../models/student.model';
+import { Turno } from '../models/turno.model';
 
 const httpOptions = {
     headers: new HttpHeaders({
@@ -37,9 +39,36 @@ export class InscripcionesService{
     }
     getAll(): void {
         this.httpClient.get<RegTurnoUserStudent[]>(`${environment.API_URL}/api/v1/all_registers`).subscribe(data => {
-            console.log(data);
 
-           // this.dataChange.next(this.aux);
+            var aux: RegTurnoUserStudent[] = [];
+
+            data['data'].forEach(element => {
+                const aux_float = new RegTurnoUserStudent;
+                const aux_student = new Student;
+                const aux_turno = new Turno;
+
+                aux_float.id = element['id'];
+                aux_float.userFirstName = element['user_first_name'];
+                aux_float.userLastName = element['user_last_name'];
+                aux_float.userMail = element['user_mail'];
+                aux_float.userPhone = element['user_phone'];
+
+                aux_student.firstName = element['student_first_name'];
+                aux_student.lastName = element['student_last_name'];
+                aux_student.numPie= element['student_num_pie'];
+                aux_student.fechaNacimiento = element['student_birth_date'];
+
+                aux_turno.horario = element['horario'];
+                aux_turno.localidad = element['localidad'];
+                aux_turno.nombre = element['turno_name'];
+
+                aux_float.student = aux_student;
+                aux_float.turnos = [];
+                aux_float.turnos[0] = aux_turno;
+
+                aux.push(aux_float);
+            });
+            this.dataChange.next(aux);
         },
         (error: HttpErrorResponse) => {
             console.log (error.name + ' ' + error.message);
@@ -47,8 +76,7 @@ export class InscripcionesService{
     }
 
     registerInscription(data: RegTurnoUserStudent): Observable<{bt1:boolean, bt2:boolean}>{
-        
-        
+
         this.httpClient.post(`${environment.API_URL}/api/inscripcion`, JSON.stringify(data), httpOptions)
         .subscribe(data => {
             swal({

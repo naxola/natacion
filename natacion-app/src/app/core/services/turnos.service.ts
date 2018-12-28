@@ -34,7 +34,8 @@ export class TurnosService{
     }
     /** CRUD METHODS */
     getAll(): void {
-        this.httpClient.get<Turno[]>(`${environment.API_URL}/api/v1/all_turnos`).subscribe(data => {
+        this.httpClient.get<Turno[]>(`${environment.API_URL}/api/v1/all_turnos`)
+        .subscribe(data => {
             this.dataChange.next(data['data']);
             //this.toasterService.success('Datos cargados correctamente');
         },
@@ -45,22 +46,50 @@ export class TurnosService{
 
     // DEMO ONLY, you can find working methods below
     addItem (turno: Turno): void {
-        this.httpClient.post(`${environment.API_URL}/api/v1/turno`, turno, httpOptions).subscribe(data => {
-                this.dataChange.next(data['data']);
-                this.toasterService.success('Successfully added');
+
+        this.httpClient.post(`${environment.API_URL}/api/v1/turno`, turno, httpOptions)
+        .subscribe(data => {
+                //this.dataChange.next(data['data']);
+                turno.id = data['data'].id;
+                this.dialogData = turno;
+                this.toasterService.success('Turno añadido correctamente');
             },
+            error => {
+                this.toasterService.error(error.name + ' ' + error.message, 'En serio??: ');
+                
+            });
+            /*
+            ,
             (err: HttpErrorResponse) => {
-                this.toasterService.error(err.name + ' ' + err.message, 'Ha ocurrido un error: ');
+                this.toasterService.error(err.name + ' ' + err.message, 'En serio??: ');
           });
+          */
     }
 
-    updateItem (turno: Turno): void {
-        this.dialogData = turno;
+
+
+    deleteItem(id: number): void {
+        this.httpClient.delete(`${environment.API_URL}/api/v1/turno/` + id).subscribe(data => {
+            this.toasterService.success('Turno eliminado con exito');
+          },
+          (err: HttpErrorResponse) => {
+            this.toasterService.error('Ha ocurrido un error: ' + err.name + ' ' + err.message);
+          }
+        );
+      }
+
+    updateItem(turno: Turno): void {
+        console.log(turno);
+        this.httpClient.put(`${environment.API_URL}/api/v1/turno/` + turno.id, turno).subscribe(data => {
+            this.dialogData = turno;
+            this.toasterService.success('Successfully edited');
+          },
+          (err: HttpErrorResponse) => {
+            this.toasterService.error('Error occurred. Details: ' + err.name + ' ' + err.message);
+          }
+        );
     }
 
-    deleteItem (id: number): void {
-        console.log(id);
-    }
     findTurnosDisponibles(){
         this.httpClient.get(`${environment.API_URL}/api/turnos_disponibles`, {
             params: new HttpParams()

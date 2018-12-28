@@ -32,10 +32,7 @@ export class AddDialogComponent {
           this.dialogRef.close();
         }
       
-        public confirmAdd(): void {
-          console.log(this.data['fechaInicio']);
-          console.log(this.data['fechaInicio']['_i']);
-         
+        public confirmAdd(): void {         
           this.dataService.addItem(this.data);
       }
 }

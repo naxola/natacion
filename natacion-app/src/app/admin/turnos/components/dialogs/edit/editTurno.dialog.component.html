@@ -1,0 +1,80 @@
+<div class="container">
+    <h3 mat-dialog-title>Añadir nuevo Turno </h3>
+        
+    <form class="mat-dialog-content" (ngSubmit)="submit" #formControl="ngForm">                   
+        <div class="row">
+            <div class="col-4">
+                <mat-form-field color="accent">
+                    <input matInput placeholder="Nombre del turno" [(ngModel)]="data.nombre" name="nombre" required>
+                    <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+                  </mat-form-field>
+            </div>
+            <div class="col-4">
+                <mat-form-field color="accent">
+                  <mat-select placeholder="Localidad" name="Localidad" [(value)]="data.localidad" required>
+                      <mat-option>None</mat-option>
+                      <mat-option value="Callosa de Segura">Callosa de Segura</mat-option>
+                      <mat-option value="Crevillente">Crevillente</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+                  <mat-hint>Elige la localidad</mat-hint>
+              </mat-form-field>
+              </div>
+              <div class="col-4">
+                  <mat-form-field color="accent">
+                    <mat-select placeholder="Horario" name="horario" [(value)]="data.horario" required>
+                        <mat-option>None</mat-option>
+                        <mat-option value="Mañana">Mañana</mat-option>
+                        <mat-option value="Tarde">Tarde</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+                    <mat-hint>Elige el horario</mat-hint>
+                </mat-form-field>
+                </div>
+        </div>
+              
+            
+            
+      
+            
+            <div class="row">
+                <div class="col-4">
+                    <mat-form-field >
+                      <input matInput [matDatepicker]="fechaIniPicker" [(ngModel)]="data.fecha_inicio" placeholder="Fecha de inicio (dd/mm/aaaa)" name="fechaInicio" required>
+                      <mat-datepicker-toggle matSuffix [for]="fechaIniPicker"></mat-datepicker-toggle>
+                      <mat-datepicker #fechaIniPicker></mat-datepicker>
+                      <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-4">
+                    <mat-form-field >
+                      <input matInput [matDatepicker]="fechaFinPicker" [(ngModel)]="data.fecha_fin" placeholder="Fecha de fin (dd/mm/aaaa)" name="fechaFin" required>
+                      <mat-datepicker-toggle matSuffix [for]="fechaFinPicker"></mat-datepicker-toggle>
+                      <mat-datepicker #fechaFinPicker></mat-datepicker>
+                      <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-4">
+                    <mat-form-field >
+                      <input matInput [matDatepicker]="fechaLimPicker" [(ngModel)]="data.fecha_limite" placeholder="Fecha max inscripcion (dd/mm/aaaa)" name="fechaLimite" required>
+                      <mat-datepicker-toggle matSuffix [for]="fechaLimPicker"></mat-datepicker-toggle>
+                      <mat-datepicker #fechaLimPicker></mat-datepicker>
+                      <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+                    </mat-form-field>
+                  </div>
+            </div>
+            
+            
+              
+                    <div class="row m-b-20">
+                      <div class="col-12">
+                        <button class="btn btn-outline-info pull-left" (click)="onNoClick()" tabindex="-1">Cancel</button>
+                        <button class="btn btn-info pull-right" [type]="submit" [disabled]="!formControl.valid" [mat-dialog-close]="1" (click)="stopEdit()">Guardar</button>
+                      
+                        
+                
+                    </div>
+            </div>
+            
+          </form>
+    </div>

@@ -1,0 +1,78 @@
+<div class="container">
+        <mat-tab-group>
+                <mat-tab label="First"> Content 1 </mat-tab>
+                <mat-tab label="Second"> Content 2 </mat-tab>
+                <mat-tab label="Third"> Content 3 </mat-tab>
+              </mat-tab-group>
+              
+    <h3 mat-dialog-title>Datos del registro </h3>
+    
+    <form class="mat-dialog-content" (ngSubmit)="submit" #formControl="ngForm">   
+        <h4>Datos del padre/madre/tutor</h4>                
+        <div class="row">
+            <div class="col-lg-6 col-md-12">
+                <mat-form-field color="accent">
+                    <input matInput placeholder="Nombre" [(ngModel)]="data.userFirstName" name="nombre" required>
+                    <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+                  </mat-form-field>
+            </div>
+            <div class="col-lg-6 col-md-12">
+                <mat-form-field color="accent">
+                    <input matInput placeholder="Apellidos" [(ngModel)]="data.userLastName" name="nombre" required>
+                    <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+                  </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-md-12">
+                <mat-form-field color="accent">
+                    <input matInput placeholder="Correo electrónico" [(ngModel)]="data.userMail" name="nombre" required>
+                    <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+                  </mat-form-field>
+            </div>
+            <div class="col-lg-6 col-md-12">
+                <mat-form-field color="accent">
+                    <input matInput placeholder="Teléfono" [(ngModel)]="data.userPhone" name="nombre" required>
+                    <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+                  </mat-form-field>
+            </div>
+        </div>
+        <h4>Datos del alumno</h4>
+        <div class="row">
+                <div class="col-lg-6 col-md-12">
+                    <mat-form-field color="accent">
+                        <input matInput placeholder="Nombre" [(ngModel)]="data.studentFirstName" name="nombre" required>
+                        <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+                      </mat-form-field>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <mat-form-field color="accent">
+                        <input matInput placeholder="Apellidos" [(ngModel)]="data.studentLastName" name="nombre" required>
+                        <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+                      </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <mat-form-field >
+                      <input matInput [matDatepicker]="fechaIniPicker" [(ngModel)]="data.fecha_inicio" placeholder="Fecha de inicio (dd/mm/aaaa)" name="fechaInicio" required>
+                      <mat-datepicker-toggle matSuffix [for]="fechaIniPicker"></mat-datepicker-toggle>
+                      <mat-datepicker #fechaIniPicker></mat-datepicker>
+                      <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+                    </mat-form-field>
+                  </div>
+                  
+            </div>
+            
+            
+              
+                    <div class="row m-b-20">
+                      <div class="col-12">
+                        <button class="btn btn-outline-info pull-left" (click)="onNoClick()" tabindex="-1">Cancel</button>
+                        <button class="btn btn-info pull-right" [type]="submit" [disabled]="!formControl.valid" [mat-dialog-close]="1" (click)="confirmAdd()">Guardar</button>
+
+                    </div>
+            </div>
+            
+          </form>
+    </div>

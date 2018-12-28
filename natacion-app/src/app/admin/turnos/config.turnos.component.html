@@ -19,10 +19,13 @@
                   The actual rendered columns are set as a property on the row definition" -->
         
             <!-- ID Column -->
+
             <ng-container matColumnDef="id">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
               <mat-cell *matCellDef="let turno" >{{turno.id}}</mat-cell>
             </ng-container>
+
+            
         
       
         
@@ -65,11 +68,11 @@
               </mat-header-cell>
         
         <mat-cell *matCellDef="let row; let i=index;">
-                <button mat-icon-button color="accent" (click)="startEdit(i, row.id, row.title, row.state, row.url, row.created_at, row.updated_at)">
+                <button mat-icon-button color="accent" (click)="startEdit(i, row.id, row.nombre, row.localidad, row.horario, row.fecha_inicio, row.fecha_fin, row.fecha_limite)">
                   <mat-icon aria-label="Edit">edit</mat-icon>
                 </button>
         
-                <button mat-icon-button color="accent" (click)="deleteItem(i, row.id, row.title, row.state, row.url)">
+                <button mat-icon-button color="accent" (click)="deleteItem(i, row.id, row.nombre, row.localidad)">
                   <mat-icon aria-label="Delete">delete</mat-icon>
                 </button>
               </mat-cell>

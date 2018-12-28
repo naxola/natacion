@@ -30,11 +30,6 @@ security:
             guard:
                 authenticators:
                     - lexik_jwt_authentication.jwt_token_authenticator
-                    
-        register:
-            pattern: ^/api/turnos_disponibles
-            stateless: true
-            anonymous: true
  
     access_control:
         - { path: ^/api/login_check, roles: IS_AUTHENTICATED_ANONYMOUSLY }

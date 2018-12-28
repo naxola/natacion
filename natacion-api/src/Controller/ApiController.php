@@ -478,7 +478,7 @@ class ApiController extends FOSRestController
      * )
      *
      * @SWG\Parameter(
-     *     name="lastName",
+     *     name="Localidad",
      *     in="body",
      *     type="string",
      *     description="The lastName",
@@ -486,7 +486,7 @@ class ApiController extends FOSRestController
      * )
      *
      * @SWG\Parameter(
-     *     name="numPie",
+     *     name="fechaInicio",
      *     in="body",
      *     type="string",
      *     description="The numero de pie",
@@ -494,13 +494,13 @@ class ApiController extends FOSRestController
      * )
      *
      * @SWG\Parameter(
-     *     name="fechaNacimiento",
+     *     name="fechaFin",
      *     in="query",
      *     type="string",
      *     description="The Fecha de nacimiento"
      * )
      *
-     * @SWG\Tag(name="Student")
+     * @SWG\Tag(name="Turno")
      */
     public function addTurnoAction(Request $request) {
         $serializer = $this->get('jms_serializer');
@@ -514,18 +514,20 @@ class ApiController extends FOSRestController
            
            $nombre = $request->request->get("nombre", null);
            $localidad = $request->request->get("localidad", null);
-           $fecha_inicio = $request->request->get("fechaInicio", null);
-           $fecha_fin = $request->request->get("fechaFin", null);
-           $fecha_limite = $request->request->get("fechaLimite", null);
+           $horario = $request->request->get("horario", null);
+           $fecha_inicio = $request->request->get("fecha_inicio", null);
+           $fecha_fin = $request->request->get("fecha_fin", null);
+           $fecha_limite = $request->request->get("fecha_limite", null);
             
             $turno = new RegTurno();
             
             $turno->setNombreTurno($nombre);
-            $turno->setLocalidad($localidad['name']);
+            $turno->setLocalidad($localidad);
+            $turno->setHorario($horario);
 
-            $turno->setFechaInicio($this->setDateFormat($fecha_inicio['_i']));
-            $turno->setFechaFin($this->setDateFormat($fecha_fin['_i']));
-            $turno->setFechaLimite($this->setDateFormat($fecha_limite['_i']));
+            $turno->setFechaInicio(new DateTime($fecha_inicio));
+            $turno->setFechaFin(new DateTime($fecha_fin));
+            $turno->setFechaLimite(new DateTime($fecha_limite));
 
             $em->persist($turno);
             $em->flush();
@@ -658,11 +660,150 @@ class ApiController extends FOSRestController
         return new Response($serializer->serialize($response, "json"));
     }
     /**
-     * @Rest\Get("/v1/all_registers.{_format}", name="turnos_list_all_available", defaults={"_format":"json"})
+     * @Rest\Put("/v1/turno/{id}.{_format}", name="turno_edit", defaults={"_format":"json"})
      *
      * @SWG\Response(
      *     response=200,
-     *     description="Gets all turnos disponibles"
+     *     description="The turno was edited successfully."
+     * )
+     *
+     * @SWG\Response(
+     *     response=500,
+     *     description="An error has occurred trying to edit the board."
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="id",
+     *     in="path",
+     *     type="string",
+     *     description="The turno ID"
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="name",
+     *     in="body",
+     *     type="string",
+     *     description="The board name",
+     *     schema={}
+     * )
+     *
+     *
+     * @SWG\Tag(name="Turnos")
+     */
+    public function editTurnoAction(Request $request, $id) {
+        $serializer = $this->get('jms_serializer');
+        $em = $this->getDoctrine()->getManager();
+        $turno = [];
+        $message = "";
+ 
+        try {
+            $code = 200;
+            $error = false;
+
+            $nombre = $request->request->get("nombre", null);
+            $localidad = $request->request->get("localidad", null);
+            $horario = $request->request->get("horario", null);
+            $fecha_inicio = $request->request->get("fecha_inicio", null);
+            $fecha_fin = $request->request->get("fecha_fin", null);
+            $fecha_limite = $request->request->get("fecha_limite", null);
+
+            $turno = $em->getRepository("App:RegTurno")->find($id);
+ 
+            if (!is_null($turno)) {
+            
+                $turno->setNombreTurno($nombre);
+                $turno->setLocalidad($localidad);
+                $turno->setHorario($horario);
+                $turno->setFechaInicio(new DateTime($fecha_inicio));
+                $turno->setFechaFin(new DateTime($fecha_fin));
+                $turno->setFechaLimite(new DateTime($fecha_limite));
+ 
+                $em->persist($turno);
+                $em->flush();
+ 
+            } else {
+                $code = 500;
+                $error = true;
+                $message = "An error has occurred trying to add new Turno - El turno debe existir";
+            }
+ 
+        } catch (Exception $ex) {
+            $code = 500;
+            $error = true;
+            $message = "An error has occurred trying to edit the current turno - Error: {$ex->getMessage()}";
+        }
+ 
+        $response = [
+            'code' => $code,
+            'error' => $error,
+            'data' => $code == 200 ? $turno : $message,
+        ];
+ 
+        return new Response($serializer->serialize($response, "json"));
+    }
+        /**
+     * @Rest\Delete("/v1/turno/{id}.{_format}", name="turno_remove", defaults={"_format":"json"})
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="Turno was successfully removed"
+     * )
+     *
+     * @SWG\Response(
+     *     response=400,
+     *     description="An error was occurred trying to remove the Turno"
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="id",
+     *     in="path",
+     *     type="string",
+     *     description="The Turno ID"
+     * )
+     *
+     * @SWG\Tag(name="Turno")
+     */
+    public function deleteTurnoAction(Request $request, $id) {
+        $serializer = $this->get('jms_serializer');
+        $em = $this->getDoctrine()->getManager();
+ 
+        try {
+            $code = 200;
+            $error = false;
+            $turno = $em->getRepository("App:RegTurno")->find($id);
+ 
+            if (!is_null($turno)) {
+                $em->remove($turno);
+                $em->flush();
+ 
+                $message = "The board was removed successfully!";
+ 
+            } else {
+                $code = 500;
+                $error = true;
+                $message = "An error has occurred trying to remove the currrent board - Error: The board id does not exist";
+            }
+ 
+        } catch (Exception $ex) {
+            $code = 500;
+            $error = true;
+            $message = "An error has occurred trying to remove the current board - Error: {$ex->getMessage()}";
+        }
+ 
+        $response = [
+            'code' => $code,
+            'error' => $error,
+            'data' => $message,
+        ];
+ 
+        return new Response($serializer->serialize($response, "json"));
+    }
+    /**
+     * @Rest\Get("/v1/all_registers.{_format}", name="user_list_all", defaults={"_format":"json"})
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="Gets all alumnos"
      * )
      *
      * @SWG\Response(
@@ -771,12 +912,9 @@ class ApiController extends FOSRestController
             $student = $request->request->get("student", null);
 
             if (!is_null($turnos)) {
-                $inscripcion = new RegInscripciones();
-                
+             
                 foreach($turnos as $turno){
-                    
-                    
-
+                    $inscripcion = new RegInscripciones();
                     $inscripcion->setUserFirstName($request->request->get("userFirstName", null));
                     $inscripcion->setUserLasttName($request->request->get("userLastName", null));
                     $inscripcion->setUserMail($request->request->get("userMail", null));

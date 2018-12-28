@@ -26,7 +26,7 @@
         
             <ng-container matColumnDef="nombre_usuario">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Nombre Padre</mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{row.userFirstName}} {{row.userLasstName}}</mat-cell>
+                <mat-cell *matCellDef="let row"> {{row.userFirstName}} {{row.userLastName}}</mat-cell>
             </ng-container>
             
             <ng-container matColumnDef="phone_usuario">
@@ -36,22 +36,22 @@
 
             <ng-container matColumnDef="nombre_student">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Nombre alumno</mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{row.userPhone}} {{row.userPhone}}</mat-cell>
+                <mat-cell *matCellDef="let row"> {{row?.student.firstName}} {{row?.student.lastName}}</mat-cell>
             </ng-container>
         
             <ng-container matColumnDef="localidad">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Localidad</mat-header-cell>
-              <mat-cell *matCellDef="let row"> {{row.localidad}}</mat-cell>
+              <mat-cell *matCellDef="let row"> {{row?.turnos[0].Localidad}}</mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="nombre">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Turno</mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{row.nombre}}</mat-cell>
+                <mat-cell *matCellDef="let row"> {{row?.turnos[0].nombre}}</mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="horario">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Horario</mat-header-cell>
-              <mat-cell *matCellDef="let row"> {{row.horario}}</mat-cell>
+              <mat-cell *matCellDef="let row"> {{row?.turnos[0].horario}}</mat-cell>
             </ng-container>
         
             
